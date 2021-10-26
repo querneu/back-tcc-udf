@@ -17,9 +17,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     const { cod_login, cod_senha } = req.body;
     if (!cod_login || !cod_senha) {
-        return res.status(400).send(
-            'Request missing cod_login or cod_senha param'
-        );
+        return res.status(400).send('Faltando parametros de Login ou Senha!');
     }
     try {
         let usuario = await Usuario.authenticate(cod_login, cod_senha);
@@ -27,7 +25,7 @@ exports.login = async (req, res) => {
         return res.json(usuario);
     } catch (err) {
         console.log(err)
-        return res.status(400).send('invalid cod_login or cod_password');
+        return res.status(400).send('Login ou Senha inválidos!');
     }
 }
 
@@ -39,7 +37,7 @@ exports.logout = async (req, res) => {
         return res.status(204).send()
     }
     return res.status(400).send(
-        { errors: [{ message: 'not authenticated' }] }
+        { errors: [{ message: 'Não autenticado!' }] }
     );
 }
 
@@ -49,6 +47,6 @@ exports.me = function(req, res) {
         return res.send(req.usuario);
     }
     res.status(404).send(
-        { errors: [{ message: 'missing auth token' }] }
+        { errors: [{ message: 'Faltando token de autenticação!' }] }
     );
 }
