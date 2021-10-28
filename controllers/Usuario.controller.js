@@ -1,6 +1,6 @@
 'use strict';
 const { Usuario } = require('../models');
-
+const bcrypt = require('bcrypt');
 exports.register = async (req, res) => {
     const hash = bcrypt.hashSync(req.body.cod_senha, 10);
     try {
