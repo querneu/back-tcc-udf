@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const app = express();
 const PORT = 3000;
 const db = require('./models');
@@ -11,6 +12,7 @@ const UsuarioRoutes = require('./routes/Usuario.routes');
 //Following lines are to make sure our app can parse the json data
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 app.use(CustomAuthMiddleware);
 app.use(express.urlencoded({
     extended: false
