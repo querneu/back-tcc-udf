@@ -12,7 +12,7 @@ const UsuarioRoutes = require('./routes/Usuario.routes');
 //Following lines are to make sure our app can parse the json data
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 app.use(CustomAuthMiddleware);
 app.use(express.urlencoded({
     extended: false
@@ -22,7 +22,7 @@ app.use(express.urlencoded({
 db.sequelize.sync()
     .then((result) => {
         //Rotas de usuario
-        app.use('/',UsuarioRoutes);
+        app.use('/', UsuarioRoutes);
         //Rotas tipo ensino
         app.use('/api/tipo_ensino', TipoEnsinoRoutes)
         //Rotas aluno
