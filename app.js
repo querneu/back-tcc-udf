@@ -12,7 +12,7 @@ const UsuarioRoutes = require('./routes/Usuario.routes');
 //Following lines are to make sure our app can parse the json data
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: true }));
+app.use(cors({ credentials: true, origin: true, allowedHeaders: true, methods: 'GET,PUT,POST,DELETE' }));
 app.use(CustomAuthMiddleware);
 app.use(express.urlencoded({
     extended: false
