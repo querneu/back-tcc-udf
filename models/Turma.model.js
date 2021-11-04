@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Turma.associate = (models) => {
         Turma.belongsTo(models.TipoEnsino, {
-          foreignKey: 'id_tipo_ensino'
+          foreignKey: {name:'id_tipo_ensino'}
         })
       }
     return Turma;

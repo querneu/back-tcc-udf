@@ -20,10 +20,14 @@ module.exports = ( sequelize, DataTypes) => {
         email_professor:{
             type: DataTypes.STRING,
         }
-    },{});
+    },);
 
-    Professor.associate = function (models) {
-        Professor.belongsTo(models.Ensino);
-    };
+    Professor.associate = (models) => {
+        Professor.belongsTo(models.Ensino, {
+            foreignKey: {
+                name: 'id_tipo_ensino'
+              }
+        })
+      }
     return Professor;
 }
