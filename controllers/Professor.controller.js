@@ -49,6 +49,6 @@ exports.delete = async (req, res) => {
         const result = await db.Professor.destroy({ where: { id_professor: req.params.id } })
         res.send(result);
     } catch (err) {
-
+        res.send(err)
     }
 }
