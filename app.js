@@ -10,6 +10,7 @@ const AlunoRoutes = require('./routes/Aluno.routes');
 const DisciplinaRoutes = require('./routes/Disciplina.routes');
 const UsuarioRoutes = require('./routes/Usuario.routes');
 const ProfessorRoutes = require('./routes/Professor.routes');
+const TurmaRoutes = require('./routes/Turma.routes');
 //Following lines are to make sure our app can parse the json data
 app.use(express.json());
 app.use(cookieParser());
@@ -32,6 +33,8 @@ db.sequelize.sync()
         app.use('/api/professor', ProfessorRoutes);
         //Rotas disciplina
         app.use('/api/disciplina', DisciplinaRoutes);
+        //Rotas turma
+        app.use('/api/turma', TurmaRoutes);
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
         })
