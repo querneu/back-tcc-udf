@@ -20,6 +20,10 @@ module.exports = ( sequelize, DataTypes) => {
         email_professor:{
             type: DataTypes.STRING,
         }
-    });
+    },{});
+
+    Professor.associate = function (models) {
+        Professor.belongsTo(models.Ensino);
+    };
     return Professor;
 }
