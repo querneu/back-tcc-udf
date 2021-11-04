@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
     Turma.associate = (models) => {
-        Turma.belongsTo(models.TipoEnsino, {
+        Turma.hasOne(models.TipoEnsino, {
           foreignKey: 'id_tipo_ensino'
         })
       }
