@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
     Ensino.associate = (models) => {
-        Ensino.hasMany(models.Professor, {
+        Ensino.hasMany(models.TipoEnsino, {
             foreignKey: {
                 name: 'id_tipo_ensino'
             }
