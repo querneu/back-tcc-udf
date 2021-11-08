@@ -10,14 +10,15 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
     Ensino.associate = (models) => {
-        Ensino.hasMany(models.TipoEnsino, {
+        Ensino.belongsTo(models.Professor, {
             foreignKey: {
-                name: 'id_tipo_ensino'
+                name: 'id_professor'
             }
         }),
-        Ensino.hasMany(models.Turma, {
+            
+        Ensino.belongsTo(models.Disciplina, {
             foreignKey: {
-                name: 'id_turma'
+                name: 'id_disciplina'
             }
         })
     }
