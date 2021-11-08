@@ -22,7 +22,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.findOne(req.params.id);
+        const disciplina = await db.Disciplina.findOne({ where: { id_disciplina: req.params.id } });
         res.send(disciplina);
     } catch (err) {
         res.send(err);

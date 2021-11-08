@@ -21,7 +21,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const professor = await db.Professor.findById(req.params.id);
+        const professor = await db.Professor.findById({ where: { id_professor: req.params.id } });
         res.send(professor);
     } catch (err) {
         res.send(err);

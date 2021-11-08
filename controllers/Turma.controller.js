@@ -22,7 +22,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const turma = await db.Turma.findOne(req.params.id);
+        const turma = await db.Turma.findOne({ where: { id_turma: req.params.id } });
         res.send(turma);
     } catch (err) {
         res.send(err);

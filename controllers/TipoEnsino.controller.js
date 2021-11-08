@@ -22,7 +22,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const tipoEnsino = await db.TipoEnsino.findOne(req.params.id);
+        const tipoEnsino = await db.TipoEnsino.findOne({ where: { id_tipo_ensino: req.params.id } });
         res.send(tipoEnsino);
     } catch (err) {
         res.send(err);
