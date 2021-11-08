@@ -8,6 +8,12 @@ module.exports = (sequelize, DataTypes) => {
       nome_horario: {
         type: DataTypes.STRING,
       },
+      hora_inicio:{
+        type: DataTypes.STRING,
+      },
+      hora_fim:{
+        type: DataTypes.STRING,
+      },
       num_ordem: {
         type: DataTypes.INTEGER,
       },

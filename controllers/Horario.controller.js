@@ -34,6 +34,8 @@ exports.update = async (req, res) => {
         const result = await db.Horario.update(
             { nom_horario: req.body.nom_horario },
             { num_ordem: req.body.num_ordem },
+            { num_ordem: req.body.hora_inicio },
+            { num_ordem: req.body.hora_fim },
             { where: { id_horario: req.params.id } }
         )
         res.send(result)
