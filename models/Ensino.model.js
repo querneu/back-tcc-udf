@@ -5,13 +5,21 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true
         },
-        is_active:{
-            type:DataTypes.INTEGER,
+        is_active: {
+            type: DataTypes.INTEGER,
         }
     });
     Ensino.associate = (models) => {
-        Ensino.hasMany(models.Professor),
-        Ensino.hasMany(models.Disciplina)
+        Ensino.hasMany(models.Professor, {
+            foreignKey: {
+                name: 'id_tipo_ensino'
+            }
+        }),
+        Ensino.hasMany(models.Turma, {
+            foreignKey: {
+                name: 'id_turma'
+            }
+        })
     }
     return Ensino;
 };

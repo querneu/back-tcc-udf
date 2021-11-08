@@ -22,12 +22,6 @@ module.exports = ( sequelize, DataTypes) => {
         }
     },);
 
-    Professor.associate = (models) => {
-        Professor.belongsTo(models.Ensino, {
-            foreignKey: {
-                name: 'id_tipo_ensino'
-              }
-        })
-      }
+    
     return Professor;
 }
