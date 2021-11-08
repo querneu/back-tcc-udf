@@ -22,7 +22,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const horario = await db.Horario.findOne(req.params);
+        const horario = await db.Horario.findOne(req.params.id);
         res.send(horario);
     } catch (err) {
         res.send(err);
