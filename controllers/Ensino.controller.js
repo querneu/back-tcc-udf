@@ -30,11 +30,8 @@ exports.findById = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
-    const ensino = {
-        is_active: req.params.is_active
-    }
     try {
-        const result = await db.Ensino.update(ensino, { where: { id_ensino: req.params.id } });
+        const result = await db.Ensino.update(req.body, { where: { id_ensino: req.params.id } });
         res.send(result);
     } catch (err) {
         res.send(err)

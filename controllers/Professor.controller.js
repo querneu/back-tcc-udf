@@ -29,17 +29,8 @@ exports.findById = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
-    const professor = {
-        nome_professor: req.body.nome_professor,
-        qtd_horas_trabalho: req.body.qtd_horas_trabalho,
-        matricula: req.body.matricula,
-        telefone: req.body.telefone,
-        qtd_horas_trabalho: req.body.email_professor,
-    }
     try {
-        const result = await db.Professor.update(
-            professor,
-            { where: { id_professor: req.params.id } });
+        const result = await db.Professor.update(req.body, { where: { id_professor: req.params.id } });
         res.send(result)
     } catch (err) {
         res.send(err)

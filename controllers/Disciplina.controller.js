@@ -30,14 +30,8 @@ exports.findById = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
-    const disciplina = {
-        nome_disciplina: req.body.nome_disciplina,
-        aula_exclusiva: req.body.aula_exclusiva,
-        qtd_carga_horaria: req.body.qtd_carga_horaria,
-        qtd_aulas: req.body.qtd_aulas,
-    }
     try {
-        const result = await db.Disciplina.update(disciplina,
+        const result = await db.Disciplina.update(req.body,
             { where: { id_disciplina: req.params.id } }
         )
         res.send(result)
