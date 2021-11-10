@@ -30,21 +30,22 @@ exports.findById = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
+    const turma = {
+        ano_turma: req.params.ano_turma,
+        nome_turma: req.params.nome_turma,
+        qtd_meses: req.params.qtd_meses,
+        tipo_de_calendario: req.params.tipo_de_calendario,
+        id_tipo_ensino: req.params.id_tipo_ensino,
+    }
     try {
-        const result = await db.Turma.update(
-            { ano_turma: req.params.ano_turma },
-            { nome_turma: req.params.nome_turma },
-            { qtd_meses: req.params.qtd_meses },
-            { tipo_de_calendario: req.params.tipo_de_calendario },
-            { id_tipo_ensino: req.params.id_tipo_ensino },
-            { where: { id_turma: req.params.id } })
-            res.send(result);
+        const result = await db.Turma.update(turma, { where: { id_turma: req.params.id } })
+        res.send(result);
     } catch (err) {
         res.send(err)
     }
 }
 
-exports.delete = async(req,res)=>{
+exports.delete = async (req, res) => {
     try {
         try {
             const result = await db.Turma.destroy({ where: { id_turma: req.params.id } });

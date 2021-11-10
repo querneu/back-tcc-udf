@@ -30,12 +30,14 @@ exports.findById = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
+    const horario = {
+        nom_horario: req.body.nom_horario,
+        num_ordem: req.body.num_ordem,
+        num_ordem: req.body.hora_inicio,
+        num_ordem: req.body.hora_fim
+    }
     try {
-        const result = await db.Horario.update(
-            { nom_horario: req.body.nom_horario },
-            { num_ordem: req.body.num_ordem },
-            { num_ordem: req.body.hora_inicio },
-            { num_ordem: req.body.hora_fim },
+        const result = await db.Horario.update(horario,
             { where: { id_horario: req.params.id } }
         )
         res.send(result)

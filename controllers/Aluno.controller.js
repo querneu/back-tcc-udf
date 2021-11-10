@@ -30,18 +30,20 @@ exports.findById = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
+    const aluno = {
+        nome_aluno: req.body.nome_aluno,
+        data_nascimento: req.body.data_nascimento,
+        sexo: req.body.sexo,
+        matricula: req.body.matricula,
+        telefone: req.body.telefone,
+        email: req.body.email,
+    }
     try {
-        const result = await db.Aluno.update(
-            { nome_aluno: req.body.nome_aluno },
-            { data_nascimento: req.body.data_nascimento },
-            { sexo: req.body.sexo },
-            { matricula: req.body.matricula },
-            { telefone: req.body.telefone },
-            { email: req.body.email },
-            { where: { id_aluno: req.params.id } }
+        const result = await db.Aluno.update(aluno, { where: { id_aluno: req.params.id } }
         )
         res.send(result)
     } catch (err) {
+        console.log(err)
         res.send(err)
     }
 }
