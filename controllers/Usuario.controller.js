@@ -53,6 +53,20 @@ exports.update = async (req, res) => {
     }
 }
 
+exports.delete = async (req, res) => {
+    try {
+        try {
+            const result = await Usuario.destroy({ where: { cod_login: req.params.id } });
+            res.status(200).JSON(result);
+        }
+        catch (err) {
+            res.send(err)
+        }
+    } catch (err) {
+        res.send(err);
+    }
+}
+
 exports.logout = async (req, res) => {
     const { cookies: { auth_token: authToken } } = req
     console.log(authToken)

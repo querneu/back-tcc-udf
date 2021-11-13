@@ -9,6 +9,8 @@ routes.post('/register', UsuarioController.register);
 routes.post('/login', UsuarioController.login);
 //Deletar
 routes.delete('/logout', UsuarioController.logout);
+//Deletar
+routes.delete('/:id', UsuarioController.delete);
 //Atualizar tipos de ensino por id
 routes.put("/:id", UsuarioController.update);
 //Listar tipos de ensino
