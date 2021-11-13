@@ -10,9 +10,9 @@ routes.post('/login', UsuarioController.login);
 //Deletar
 routes.delete('/logout', UsuarioController.logout);
 //Atualizar tipos de ensino por id
-routes.put("/:id", TurmaController.update);
+routes.put("/:id", UsuarioController.update);
 //Listar tipos de ensino
-routes.get("/", DisciplinaController.findAll);
+routes.get("/", UsuarioController.findAll);
 //Usuario logado
 routes.get('/me', UsuarioController.me);
 
