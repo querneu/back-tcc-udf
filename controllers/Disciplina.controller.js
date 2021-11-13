@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.findAll();
+        const disciplina = await db.Disciplina.findAll({ include: ['Ensino'] });
         res.send(disciplina);
     } catch (err) {
         res.send(err);
@@ -22,7 +22,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.findOne({ where: { id_disciplina: req.params.id } });
+        const disciplina = await db.Disciplina.findOne({ include: ['Ensino'] },{ where: { id_disciplina: req.params.id } });
         res.send(disciplina);
     } catch (err) {
         res.send(err);

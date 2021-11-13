@@ -12,7 +12,7 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const professor = await db.Professor.findAll();
+        const professor = await db.Professor.findAll({ include: ['Ensino'] });
         res.send(professor);
     } catch (err) {
         res.send(err);
@@ -21,7 +21,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const professor = await db.Professor.findOne({ where: { id_professor: req.params.id } });
+        const professor = await db.Professor.findOne({ include: ["Ensino"] },{ where: { id_professor: req.params.id } });
         res.send(professor);
     } catch (err) {
         res.send(err);

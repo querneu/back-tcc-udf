@@ -16,17 +16,8 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
     Ensino.associate = (models) => {
-        Ensino.belongsTo(models.Professor, {
-            foreignKey: {
-                name: 'id_professor'
-            }
-        }),
-            
-        Ensino.belongsTo(models.Disciplina, {
-            foreignKey: {
-                name: 'id_disciplina'
-            }
-        })
+        Ensino.belongsTo(models.Professor),
+        Ensino.belongsTo(models.Disciplina)
     }
     return Ensino;
 };

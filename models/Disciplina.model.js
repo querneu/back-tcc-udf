@@ -24,5 +24,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       }
     });
+    
+    Disciplina.associate = function (models) {
+      Disciplina.hasMany(models.Ensino, {as: 'Ensino'});
+  };
     return Disciplina;
   };
