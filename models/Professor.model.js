@@ -1,31 +1,33 @@
-module.exports = ( sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
     const Professor = sequelize.define("Professor", {
-        id_professor:{
+        id_professor: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        nome_professor:{
+        nome_professor: {
             type: DataTypes.STRING,
         },
-        qtd_horas_trabalho:{
+        qtd_horas_trabalho: {
             type: DataTypes.INTEGER,
         },
-        matricula:{
+        matricula: {
             type: DataTypes.STRING,
         },
-        telefone:{
+        telefone: {
             type: DataTypes.STRING,
         },
-        email_professor:{
+        email_professor: {
             type: DataTypes.STRING,
         },
-        is_active:{
+        is_active: {
             type: DataTypes.STRING,
         }
-    },);
+    });
     Professor.associate = function (models) {
-        Professor.hasMany(models.Ensino, {as: 'Ensino'});
-    };
+        Professor.belongsToMany(models.Disciplina, {through: 'Professor_Disciplina'});
+    
+    }
     return Professor;
+    
 }
