@@ -29,6 +29,32 @@ exports.login = async (req, res) => {
     }
 }
 
+
+exports.findAll = async (req, res) => {
+    try {
+        const usuario = await Usuario.findAll();
+        res.send(usuario);
+    } catch (err) {
+        res.send(err);
+    }
+}
+
+
+
+exports.update = async (req, res) => {
+    const usuario = {
+        cod_perfil: req.body.cod_perfil,
+        cod_login: req.body.cod_login,
+        cod_senha: bcrypt.hashSync(req.body.cod_senha, 10)
+    }
+    try {
+        const result = await Usuario.update(usuario, { where: { cod_login: req.params.id } })
+        res.send(result);
+    } catch (err) {
+        res.send(err)
+    }
+}
+
 exports.logout = async (req, res) => {
     const { cookies: { auth_token: authToken } } = req
     console.log(authToken)
@@ -42,7 +68,7 @@ exports.logout = async (req, res) => {
 }
 
 
-exports.me = function(req, res) {
+exports.me = function (req, res) {
     if (req.usuario) {
         return res.send(req.usuario);
     }

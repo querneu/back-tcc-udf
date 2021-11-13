@@ -1,15 +1,19 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const router = express.Router();
+const routes = express.Router();
 const UsuarioController = require('../controllers/Usuario.controller')
 
 //Registrar usuario
-router.post('/register', UsuarioController.register);
+routes.post('/register', UsuarioController.register);
 //Logar
-router.post('/login', UsuarioController.login);
+routes.post('/login', UsuarioController.login);
 //Deletar
-router.delete('/logout', UsuarioController.logout);
+routes.delete('/logout', UsuarioController.logout);
+//Atualizar tipos de ensino por id
+routes.put("/:id", TurmaController.update);
+//Listar tipos de ensino
+routes.get("/", DisciplinaController.findAll);
 //Usuario logado
-router.get('/me', UsuarioController.me);
+routes.get('/me', UsuarioController.me);
 
-module.exports = router;
+module.exports = routes;
