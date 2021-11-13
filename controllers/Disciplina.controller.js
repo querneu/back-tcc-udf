@@ -4,7 +4,7 @@ const db = require('../models');
 exports.create = async (req, res) => {
     const data = req.body;
     try {
-        const disciplina = await db.Disciplina.create(data);
+        const disciplina = await db.Disciplina.create(data,{ include: db.Professor });
         res.send(disciplina);
     } catch (err) {
         res.send(err);

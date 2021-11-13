@@ -11,6 +11,8 @@ const DisciplinaRoutes = require('./routes/Disciplina.routes');
 const UsuarioRoutes = require('./routes/Usuario.routes');
 const ProfessorRoutes = require('./routes/Professor.routes');
 const TurmaRoutes = require('./routes/Turma.routes');
+
+const HorarioRoutes = require('./routes/Horario.routes');
 const TurnoRoutes = require('./routes/Turma.routes');
 //Following lines are to make sure our app can parse the json data
 app.use(express.json());
@@ -35,6 +37,7 @@ db.sequelize.sync()
         //Rotas disciplina
         app.use('/api/disciplina', DisciplinaRoutes);
         //Rotas turma
+        app.use('/api/horario', HorarioRoutes);
         app.use('/api/turma', TurmaRoutes);
         //Rotas turno
         app.use('/api/turno', TurnoRoutes);

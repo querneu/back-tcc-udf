@@ -25,9 +25,14 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
     Professor.associate = function (models) {
-        Professor.belongsToMany(models.Disciplina, {through: 'Professor_Disciplina'});
-    
+        Professor.belongsToMany(models.Disciplina,
+            {
+                through: 'Professor_Disciplina',
+                foreignKey: 'id_professor',
+                targetKey: 'id_disciplina'
+            });
+
     }
     return Professor;
-    
+
 }
