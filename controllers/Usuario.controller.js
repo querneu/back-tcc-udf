@@ -44,8 +44,6 @@ exports.findAll = async (req, res) => {
 exports.update = async (req, res) => {
     const usuario = {
         cod_perfil: req.body.cod_perfil,
-        cod_login: req.body.cod_login,
-        cod_senha: bcrypt.hashSync(req.body.cod_senha, 10)
     }
     try {
         const result = await Usuario.update(usuario, { where: { cod_login: req.params.id } })

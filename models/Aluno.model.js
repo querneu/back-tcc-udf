@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
       },
+      is_active:{
+        type:DataTypes.STRING
+      }
     });
     return Aluno;
   };

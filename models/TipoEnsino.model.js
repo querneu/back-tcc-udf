@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
     nome_tipo_ensino: {
       type: DataTypes.STRING,
     },
+    is_active:{
+      type: DataTypes.STRING,
+    }
   });
 
   TipoEnsino.associate = models => {

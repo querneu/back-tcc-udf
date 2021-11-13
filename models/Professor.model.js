@@ -19,6 +19,9 @@ module.exports = ( sequelize, DataTypes) => {
         },
         email_professor:{
             type: DataTypes.STRING,
+        },
+        is_active:{
+            type: DataTypes.STRING,
         }
     },);
     

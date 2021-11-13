@@ -7,6 +7,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         is_active: {
             type: DataTypes.INTEGER,
+        },
+        dt_inicio:{
+            type: DataTypes.STRING
+        },
+        dt_fim:{
+            type: DataTypes.STRING
         }
     });
     Ensino.associate = (models) => {

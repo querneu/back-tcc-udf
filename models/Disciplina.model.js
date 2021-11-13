@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       qtd_aulas: {
         type: DataTypes.STRING,
+      },
+      cod_tipo_ensino_exclusivo:{
+        type:DataTypes.STRING
+      },
+      is_active:{
+        type: DataTypes.STRING,
       }
     });
     return Disciplina;
