@@ -11,6 +11,7 @@ const DisciplinaRoutes = require('./routes/Disciplina.routes');
 const UsuarioRoutes = require('./routes/Usuario.routes');
 const ProfessorRoutes = require('./routes/Professor.routes');
 const TurmaRoutes = require('./routes/Turma.routes');
+const EnsinoRoutes = require('./routes/Ensino.routes');
 
 const HorarioRoutes = require('./routes/Horario.routes');
 const TurnoRoutes = require('./routes/Turma.routes');
@@ -26,20 +27,19 @@ app.use(express.urlencoded({
 //Inicialização de base e rotas
 db.sequelize.sync()
     .then((result) => {
-        //Rotas de usuario
+
         app.use('/', UsuarioRoutes);
-        //Rotas tipo ensino
+
         app.use('/api/tipo_ensino', TipoEnsinoRoutes);
-        //Rotas aluno
+
         app.use('/api/aluno', AlunoRoutes);
-        //Rotas professor
+
         app.use('/api/professor', ProfessorRoutes);
-        //Rotas disciplina
+
         app.use('/api/disciplina', DisciplinaRoutes);
-        //Rotas turma
+        app.use('/api/ensino', EnsinoRoutes);
         app.use('/api/horario', HorarioRoutes);
         app.use('/api/turma', TurmaRoutes);
-        //Rotas turno
         app.use('/api/turno', TurnoRoutes);
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);

@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     Professor.associate = function (models) {
         Professor.belongsToMany(models.Disciplina,
             {
-                through: 'Professor_Disciplina',
+                through: models.Ensino,
                 foreignKey: 'id_professor',
                 targetKey: 'id_disciplina'
             });
