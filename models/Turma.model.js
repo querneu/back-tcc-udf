@@ -5,13 +5,13 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true
         },
-        ano_turma:{
+        ano_turma: {
             type: DataTypes.INTEGER,
         },
-        nome_turma:{
+        nome_turma: {
             type: DataTypes.STRING,
         },
-        qtd_meses:{
+        qtd_meses: {
             type: DataTypes.INTEGER,
         },
         tipo_de_calendario: {
@@ -19,9 +19,15 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
     Turma.associate = (models) => {
-        Turma.belongsTo(models.TipoEnsino, {
-          foreignKey: {name:'id_tipo_ensino'}
+        Turma.hasOne(models.TipoEnsino, {
+            foreignKey: { name: 'id_tipo_ensino' }
         })
-      }
+    }
+    Turma.associate = (models) => {
+        Turma.hasMany(models.Aluno, {
+            foreignKey: { name: 'id_aluno' }
+        })
+    }
+
     return Turma;
 };

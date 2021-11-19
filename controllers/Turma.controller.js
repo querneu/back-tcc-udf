@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const turma = await db.Turma.findAll();
+        const turma = await db.Turma.findAll({ include: db.Aluno, as: 'Alunos' });
         res.send(turma);
     } catch (err) {
         res.send(err);
@@ -22,7 +22,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const turma = await db.Turma.findOne({ where: { id_turma: req.params.id } });
+        const turma = await db.Turma.findByPk(req.params.id, { include: db.Aluno, as: 'Alunos' });
         res.send(turma);
     } catch (err) {
         res.send(err);

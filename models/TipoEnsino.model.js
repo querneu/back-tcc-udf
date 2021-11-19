@@ -8,14 +8,14 @@ module.exports = (sequelize, DataTypes) => {
     nome_tipo_ensino: {
       type: DataTypes.STRING,
     },
-    is_active:{
+    is_active: {
       type: DataTypes.STRING,
     }
   });
 
   TipoEnsino.associate = models => {
-    TipoEnsino.belongsToMany(models.Turma,
-      { foreignKey: {name: 'id_turma'}, constraints: false }
+    TipoEnsino.hasOne(models.Turma,
+      { foreignKey: { name: 'id_turma' }, constraints: false }
     );
 
   }
