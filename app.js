@@ -12,10 +12,9 @@ const UsuarioRoutes = require('./routes/Usuario.routes');
 const ProfessorRoutes = require('./routes/Professor.routes');
 const TurmaRoutes = require('./routes/Turma.routes');
 const EnsinoRoutes = require('./routes/Ensino.routes');
-
 const HorarioRoutes = require('./routes/Horario.routes');
 const TurnoRoutes = require('./routes/Turma.routes');
-//Following lines are to make sure our app can parse the json data
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
@@ -27,15 +26,10 @@ app.use(express.urlencoded({
 //Inicialização de base e rotas
 db.sequelize.sync()
     .then((result) => {
-
         app.use('/', UsuarioRoutes);
-
         app.use('/api/tipo_ensino', TipoEnsinoRoutes);
-
         app.use('/api/aluno', AlunoRoutes);
-
         app.use('/api/professor', ProfessorRoutes);
-
         app.use('/api/disciplina', DisciplinaRoutes);
         app.use('/api/ensino', EnsinoRoutes);
         app.use('/api/horario', HorarioRoutes);

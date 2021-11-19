@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   TipoEnsino.associate = models => {
-    TipoEnsino.hasMany(models.Turma,
+    TipoEnsino.belongsToMany(models.Turma,
       { foreignKey: {name: 'id_turma'}, constraints: false }
     );
 
