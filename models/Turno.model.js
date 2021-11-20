@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Turno.associate = (models) => {
       Turno.hasMany(models.Turma, {
+        as: 'Turma',
         foreignKey: { name: 'id_turno' }
       })
     }
