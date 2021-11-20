@@ -9,5 +9,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
     });
+
+    Turno.associate = (models) => {
+      Turno.belongsTo(models.Turma, {
+        as: 'Turma',
+        foreignKey: { name: 'id_turma' }
+      })
+    }
     return Turno;
   };
