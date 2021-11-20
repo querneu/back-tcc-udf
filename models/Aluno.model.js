@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Aluno.associate = (models) => {
     Aluno.belongsTo(models.Turma, {
+      as: 'Turma',
       foreignKey: { name: 'id_turma' }
     })
   }
