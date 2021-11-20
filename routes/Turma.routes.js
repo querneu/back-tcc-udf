@@ -1,11 +1,11 @@
 const express = require('express')
 const routes = express.Router()
-const Turma = require('../controllers/Turma.controller')
+const TurmaController = require('../controllers/Turma.controller')
 
-routes.post("/", Turma.create);
-routes.get("/", Turma.findAll);
-routes.get("/:id", Turma.findById);
-routes.put("/:id", Turma.update);
-routes.delete("/:id", Turma.delete);
+routes.post("/", TurmaController.create);
+routes.get("/", TurmaController.findAll);
+routes.get("/:id", TurmaController.findById);
+routes.put("/:id", TurmaController.update);
+routes.delete("/:id", TurmaController.delete);
 
 module.exports = routes

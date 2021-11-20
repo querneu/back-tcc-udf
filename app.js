@@ -13,7 +13,7 @@ const ProfessorRoutes = require('./routes/Professor.routes');
 const TurmaRoutes = require('./routes/Turma.routes');
 const EnsinoRoutes = require('./routes/Ensino.routes');
 const HorarioRoutes = require('./routes/Horario.routes');
-const TurnoRoutes = require('./routes/Turma.routes');
+const TurnoRoutes = require('./routes/Turno.routes');
 
 app.use(express.json());
 app.use(cookieParser());
