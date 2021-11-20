@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const turno = await db.Turno.findAll({ include: [{ model: db.Turma, as: 'Turma' }] });
+        const turno = await db.Turno.findAll({ include: [{ all:true }] });
         res.send(turno);
     } catch (err) {
         res.send(err);
@@ -22,7 +22,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const turno = await db.Turno.findByPk(req.params.id,{ include: [{ model: db.Turma, as: 'Turma' }] });
+        const turno = await db.Turno.findByPk(req.params.id,{ include: [{ all:true }] });
         res.send(turno);
     } catch (err) {
         res.send(err);
