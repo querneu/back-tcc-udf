@@ -13,9 +13,7 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const ensino = await db.Ensino.findAll({
-            include: [{ all: true, nested: true }]
-        });
+        const ensino = await db.Ensino.findAll();
         res.send(ensino);
     } catch (err) {
         res.send(err);
@@ -24,9 +22,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const ensino = await db.Ensino.findByPk(req.params.id, {
-            include: [{ all: true, nested: true }]
-        });
+        const ensino = await db.Ensino.findByPk(req.params.id);
         res.send(ensino);
     } catch (err) {
         res.send(err);
