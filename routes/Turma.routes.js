@@ -1,11 +1,11 @@
 const express = require('express')
 const routes = express.Router()
-const TurnoController = require('../controllers/Turno.controller')
+const Turma = require('../controllers/Turma.controller')
 
-routes.post("/", TurnoController.create);
-routes.get("/", TurnoController.findAll);
-routes.get("/:id", TurnoController.findById);
-routes.put("/:id", TurnoController.update);
-routes.delete("/:id", TurnoController.delete);
+routes.post("/", Turma.create);
+routes.get("/", Turma.findAll);
+routes.get("/:id", Turma.findById);
+routes.put("/:id", Turma.update);
+routes.delete("/:id", Turma.delete);
 
 module.exports = routes
