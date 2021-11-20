@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
     Turma.associate = (models) => {
-        Turma.hasOne(models.TipoEnsino, {
-            foreignKey: { name: 'id_tipo_ensino' },constraints: false
+        Turma.belongsTo(models.TipoEnsino, {
+            foreignKey: { name: 'id_tipo_ensino' }
         })
         Turma.belongsTo(models.Turno, {
             foreignKey: { name: 'id_turno' }
