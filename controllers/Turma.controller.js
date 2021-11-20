@@ -45,7 +45,7 @@ exports.delete = async (req, res) => {
     try {
         try {
             const result = await db.Turma.destroy({ where: { id_turma: req.params.id } });
-            res.send(result)
+            res.status(200).JSON(result);
         }
         catch (err) {
             res.send(err)

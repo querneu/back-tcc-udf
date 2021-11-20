@@ -41,7 +41,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const result = await db.TipoEnsino.destroy({ where: { id_tipo_ensino: req.params.id } });
-        res.send(result)
+        res.status(200).JSON(result);
     }
     catch (err) {
         res.send(err)

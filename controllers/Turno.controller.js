@@ -42,7 +42,7 @@ exports.delete = async (req, res) => {
     try {
         try {
             const result = await db.Turno.destroy({ where: { id_turno: req.params.id } });
-            res.send(result)
+            res.status(200).JSON(result);
         }
         catch (err) {
             res.send(err)

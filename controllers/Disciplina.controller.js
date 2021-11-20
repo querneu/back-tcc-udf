@@ -44,7 +44,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const result = await db.Disciplina.destroy({ where: { id_disciplina: req.params.id } });
-        res.send(result)
+        res.status(200).JSON(result);
     }
     catch (err) {
         res.send(err)
