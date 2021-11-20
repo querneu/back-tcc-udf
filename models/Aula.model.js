@@ -19,13 +19,9 @@ module.exports = (sequelize, DataTypes) => {
         Aula.belongsTo(models.Turma, {
             foreignKey: { name: 'id_turma' }
         })
-    }
-    Aula.associate = (models) => {
         Aula.belongsTo(models.Disciplina, {
             foreignKey: { name: 'id_disciplina' }
         })
-    }
-    Aula.associate = (models) => {
         Aula.belongsTo(models.Professor, {
             foreignKey: { name: 'id_professor' }
         })

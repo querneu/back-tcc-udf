@@ -4,7 +4,7 @@ const db = require('../models');
 exports.create = async (req, res) => {
     const data = req.body;
     try {
-        const disciplina = await db.Disciplina.create(data,{ include: db.Professor });
+        const disciplina = await db.Disciplina.create(data);
         res.send(disciplina);
     } catch (err) {
         res.send(err);
@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.findAll({ include: db.Professor });
+        const disciplina = await db.Disciplina.findAll( { include: {all:true} });
         res.send(disciplina);
     } catch (err) {
         res.send(err);
@@ -23,7 +23,7 @@ exports.findAll = async (req, res) => {
 exports.findById = async (req, res) => {
     console.log(req.params.id)
     try {
-        const disciplina = await db.Disciplina.findByPk(req.params.id,{ include: db.Professor });
+        const disciplina = await db.Disciplina.findByPk(req.params.id, { include: {all:true} });
         res.send(disciplina);
     } catch (err) {
         res.send(err);

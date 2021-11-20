@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Professor = sequelize.define("Professor", {
+    const Professor = sequelize.define('Professor', {
         id_professor: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -23,16 +23,14 @@ module.exports = (sequelize, DataTypes) => {
         is_active: {
             type: DataTypes.STRING,
         }
-    });
+    },{});
     Professor.associate = function (models) {
         Professor.belongsToMany(models.Disciplina,
             {
-                through: models.Ensino,
-                foreignKey: 'id_professor',
-                targetKey: 'id_disciplina'
+                through: { model: models.Ensino, unique: false },
+                as: 'Disciplinas',
+                foreignKey: 'id_professor'
             });
-    }
-    Professor.associate = function (models) {
         Professor.hasMany(models.Aula,
             {
                 foreignKey: 'id_professor',
@@ -40,4 +38,4 @@ module.exports = (sequelize, DataTypes) => {
     }
     return Professor;
 
-}
+};

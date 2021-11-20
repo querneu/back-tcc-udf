@@ -28,17 +28,15 @@ module.exports = (sequelize, DataTypes) => {
   Disciplina.associate = function (models) {
     Disciplina.belongsToMany(models.Professor,
       {
-        through: models.Ensino,
-        foreignKey: 'id_disciplina',
-        targetKey: 'id_professor'
+        through: { model: models.Ensino, unique: false },
+        as: 'Professores',
+        foreignKey: 'id_disciplina'
       }
     );
-  };
-  Disciplina.associate = function (models) {
     Disciplina.hasMany(models.Aula,
-        {
-            foreignKey: 'id_disciplina',
-        });
-}
+      {
+        foreignKey: 'id_disciplina',
+      });
+  }
   return Disciplina;
 };
