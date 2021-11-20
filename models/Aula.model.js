@@ -8,9 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         qtd_aula_semana: {
             type: DataTypes.STRING,
         },
-        is_disciplina_dupla: {
-            type: DataTypes.STRING,
-        },
         data_inicio_aula: {
             type: DataTypes.STRING,
         },
