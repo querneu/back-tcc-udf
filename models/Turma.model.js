@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { name: 'id_turma' }
         })
     }
+    Turma.associate = (models) => {
+        Turma.hasMany(models.Aula, {
+            foreignKey: { name: 'id_turma' }
+        })
+    }
 
     return Turma;
 };

@@ -34,5 +34,11 @@ module.exports = (sequelize, DataTypes) => {
       }
     );
   };
+  Disciplina.associate = function (models) {
+    Disciplina.hasMany(models.Aula,
+        {
+            foreignKey: 'id_disciplina',
+        });
+}
   return Disciplina;
 };
