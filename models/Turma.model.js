@@ -25,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
     }
     Turma.associate = (models) => {
         Turma.hasMany(models.Aluno, {
+            constraints: false,
+            as: 'Aluno',
             foreignKey: { name: 'id_aluno' }
         })
     }
