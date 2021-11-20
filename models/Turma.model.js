@@ -24,13 +24,12 @@ module.exports = (sequelize, DataTypes) => {
         })
     }
     Turma.associate = (models) => {
-        Turma.hasOne(models.Turno, {
+        Turma.belongsTo(models.Turno, {
             foreignKey: { name: 'id_turno' }
         })
     }
     Turma.associate = (models) => {
         Turma.hasMany(models.Aluno, {
-            constraints: false,
             foreignKey: { name: 'id_turma' }
         })
     }

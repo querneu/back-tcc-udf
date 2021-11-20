@@ -11,9 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Turno.associate = (models) => {
-      Turno.belongsTo(models.Turma, {
-        as: 'Turma',
-        foreignKey: { name: 'id_turma' }
+      Turno.hasMany(models.Turma, {
+        foreignKey: { name: 'id_turno' }
       })
     }
     return Turno;
