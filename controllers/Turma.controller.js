@@ -1,4 +1,5 @@
 'use strict';
+const { Sequelize } = require('../models');
 const db = require('../models');
 
 exports.create = async (req, res) => {
@@ -14,9 +15,9 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
     try {
 
-        const turma = await db.Turma.findAll({ include: [{ model: db.Aluno, as: 'Alunos' }] });
-
-        console.log(turma)
+        const turma = await db.Turma.findAll({
+            include: [{ all:true }]
+        });
         res.send(turma);
     } catch (err) {
         res.send(err);
@@ -25,7 +26,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try {
-        const turma = await db.Turma.findByPk(req.params.id, { include: [{ model: db.Aluno, as: 'Alunos' }] });
+        const turma = await db.Turma.findByPk(req.params.id, { include: [{ all:true }] });
         res.send(turma);
     } catch (err) {
         res.send(err);
