@@ -15,6 +15,7 @@ const EnsinoRoutes = require('./routes/Ensino.routes');
 const HorarioRoutes = require('./routes/Horario.routes');
 const TurnoRoutes = require('./routes/Turno.routes');
 const AulaRoutes = require('./routes/Aula.routes');
+const AnoController = require('./routes/Ano.routes');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -37,6 +38,7 @@ db.sequelize.sync()
         app.use('/api/turma', TurmaRoutes);
         app.use('/api/turno', TurnoRoutes);
         app.use('/api/aula', AulaRoutes);
+        app.use('/api/ano', AnoController);
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
         })
