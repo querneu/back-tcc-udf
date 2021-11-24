@@ -8,14 +8,14 @@ exports.create = async (req, res) => {
             res.status(200).JSON({
                 success: true,
                 status: 200,
-                message: "Aluno criado com sucesso",
+                message: "aluno criado com sucesso",
                 data: aluno
             })
         ).catch((err) => {
             res.send(400).JSON({
                 success: false,
                 status: 400,
-                message: "Erro ao criar Aluno!",
+                message: "Erro ao criar aluno!",
                 info: err
             })
         });
@@ -32,14 +32,14 @@ exports.findAll = async (req, res) => {
             res.status(200).JSON({
                 success: true,
                 status: 200,
-                message: "Alunos encontrados",
+                message: "alunos encontrados",
                 data: aluno
             })
         ).catch((err) => {
             res.send(400).JSON({
                 success: false,
                 status: 400,
-                message: "Erro ao listar Alunos!",
+                message: "Erro ao listar alunos!",
                 info: err
             })
         });
@@ -57,14 +57,14 @@ exports.findById = async (req, res) => {
                 res.status(200).JSON({
                     success: true,
                     status: 200,
-                    message: "Aluno encontrado",
+                    message: "aluno encontrado",
                     data: aluno
                 })
             ).catch((err) => {
                 res.send(400).JSON({
                     success: false,
                     status: 400,
-                    message: "Erro ao listar Aluno!",
+                    message: "Erro ao listar aluno!",
                     info: err
                 })
             });
@@ -82,14 +82,14 @@ exports.update = async (req, res) => {
             res.status(200).JSON({
                 success: true,
                 status: 200,
-                message: "Aluno criado com sucesso",
+                message: "aluno criado com sucesso",
                 data: aluno
             })
         ).catch((err) => {
             res.send(400).JSON({
                 success: false,
                 status: 400,
-                message: "Erro ao criar Aluno!",
+                message: "Erro ao criar aluno!",
                 info: err
             })
         });
@@ -105,14 +105,14 @@ exports.delete = async (req, res) => {
             res.status(200).JSON({
                 success: true,
                 status: 200,
-                message: "Aluno deletado com sucesso",
+                message: "aluno deletado com sucesso",
                 data: aluno
             })
         ).catch((err) => {
             res.send(400).JSON({
                 success: false,
                 status: 400,
-                message: "Erro ao deletar Aluno!",
+                message: "Erro ao deletar aluno!",
                 info: err
             })
         });
