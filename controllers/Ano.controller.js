@@ -6,7 +6,7 @@ exports.create = async (req, res) => {
         res.status(200).json({
             success: true,
             status: 200,
-            message: "Ano criado com sucesso!",
+            message: `Ano ${req.body.nome_ano} criado com sucesso!`,
             data: ano
         })
     }).catch((err) => {
@@ -87,7 +87,7 @@ exports.update = async (req, res) => {
         res.status(200).json({
             success: true,
             status: 200,
-            message: "Ano criado com sucesso!",
+            message: `Ano ${req.body.nome_ano} atualizado com sucesso!`,
             data: ano
         })
     }).catch((err) => {
