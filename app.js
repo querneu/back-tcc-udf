@@ -5,7 +5,8 @@ const app = express();
 const PORT = 3006;
 const db = require('./models');
 const CustomAuthMiddleware = require('./middleware/CustomAuth.middleware');
-const AnoController = require('./routes/Ano.routes');
+const AnoRoutes = require('./routes/Ano.routes');
+const DiaRoutes = require('./routes/Dia.routes');
 const UsuarioRoutes = require('./routes/Usuario.routes');
 
 app.use(express.json());
@@ -20,7 +21,8 @@ app.use(express.urlencoded({
 db.sequelize.sync()
     .then((result) => {
         app.use('/', UsuarioRoutes);
-        app.use('/api/ano', AnoController);
+        app.use('/api/ano', AnoRoutes);
+        app.use('/api/dia', DiaRoutes);
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
         })
