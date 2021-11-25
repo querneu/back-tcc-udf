@@ -4,7 +4,7 @@ const db = require('../models');
 exports.create = async (req, res) => {
     const data = req.body;
     try {
-        const dia = await db.Dia.create(data).then(
+        const dia = await db.Dia.create(data).then((dia) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -28,7 +28,7 @@ exports.findAll = async (req, res) => {
     try {
         const dia = await db.Dia.findAll(
             { include: [{ all: true }] }
-        ).then(
+        ).then((dia) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -53,7 +53,7 @@ exports.findByPk = async (req, res) => {
         const dia = await db.Dia.findByPk(req.params.id,
             {
                 include: [{ all: true }]
-            }).then(
+            }).then((dia) =>
                 res.status(200).json({
                     success: true,
                     status: 200,
@@ -78,7 +78,7 @@ exports.update = async (req, res) => {
         const dia = await db.Dia.update(
             req.body,
             { where: { id_dia: req.params.id } }
-        ).then(
+        ).then((dia) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -101,7 +101,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const dia = await db.Dia.destroy({ where: { id_dia: req.params.id } }).then(
+        const dia = await db.Dia.destroy({ where: { id_dia: req.params.id } }).then((dia) =>
             res.status(200).json({
                 success: true,
                 status: 200,

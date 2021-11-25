@@ -4,7 +4,7 @@ const db = require('../models');
 exports.create = async (req, res) => {
     const data = req.body;
     try {
-        const aluno = await db.Aluno.create(data).then(
+        const aluno = await db.Aluno.create(data).then((aluno) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -28,7 +28,7 @@ exports.findAll = async (req, res) => {
     try {
         const aluno = await db.Aluno.findAll(
             { include: [{ all: true }] }
-        ).then(
+        ).then((aluno) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -53,7 +53,7 @@ exports.findByPk = async (req, res) => {
         const aluno = await db.Aluno.findByPk(req.params.id,
             {
                 include: [{ all: true }]
-            }).then(
+            }).then((aluno) =>
                 res.status(200).json({
                     success: true,
                     status: 200,
@@ -78,7 +78,7 @@ exports.update = async (req, res) => {
         const aluno = await db.Aluno.update(
             req.body,
             { where: { id_aluno: req.params.id } }
-        ).then(
+        ).then((aluno) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -101,7 +101,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const aluno = await db.Aluno.destroy({ where: { id_aluno: req.params.id } }).then(
+        const aluno = await db.Aluno.destroy({ where: { id_aluno: req.params.id } }).then((aluno) =>
             res.status(200).json({
                 success: true,
                 status: 200,

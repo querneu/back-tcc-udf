@@ -4,7 +4,7 @@ const db = require('../models');
 exports.create = async (req, res) => {
     const data = req.body;
     try {
-        const fase = await db.Fase.create(data).then(
+        const fase = await db.Fase.create(data).then((fase) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -29,7 +29,7 @@ exports.findAll = async (req, res) => {
     try {
         const fase = await db.Fase.findAll(
             { include: [{ all: true }] }
-        ).then(
+        ).then((fase) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -54,7 +54,7 @@ exports.findByPk = async (req, res) => {
         const fase = await db.Fase.findByPk(req.params.id,
             {
                 include: [{ all: true }]
-            }).then(
+            }).then((fase) =>
                 res.status(200).json({
                     success: true,
                     status: 200,
@@ -79,7 +79,7 @@ exports.update = async (req, res) => {
         const fase = await db.Fase.update(
             req.body,
             { where: { id_fase: req.params.id } }
-        ).then(
+        ).then((fase) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -102,7 +102,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const fase = await db.Fase.destroy({ where: { id_fase: req.params.id } }).then(
+        const fase = await db.Fase.destroy({ where: { id_fase: req.params.id } }).then((fase) =>
             res.status(200).json({
                 success: true,
                 status: 200,

@@ -18,20 +18,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         },
     });
-    Turma.associate = (models) => {
-        Turma.belongsTo(models.TipoEnsino, {
-            foreignKey: { name: 'id_tipo_ensino' }
-        })
-        Turma.belongsTo(models.Turno, {
-            foreignKey: { name: 'id_turno' }
-        })
-        Turma.hasMany(models.Aluno, {
-            foreignKey: { name: 'id_turma' }
-        })
-        Turma.hasMany(models.Aula, {
-            foreignKey: { name: 'id_turma' }
-        })
-    }
 
     return Turma;
 };

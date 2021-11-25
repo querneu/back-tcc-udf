@@ -4,7 +4,7 @@ const db = require('../models');
 exports.create = async (req, res) => {
     const data = req.body;
     try {
-        const disciplina = await db.Disciplina.create(data).then(
+        const disciplina = await db.Disciplina.create(data).then((disciplina) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -28,7 +28,7 @@ exports.findAll = async (req, res) => {
     try {
         const disciplina = await db.Disciplina.findAll(
             { include: [{ all: true }] }
-        ).then(
+        ).then((disciplina) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -53,7 +53,7 @@ exports.findById = async (req, res) => {
         const disciplina = await db.Disciplina.findByPk(req.params.id,
             {
                 include: [{ all: true }]
-            }).then(
+            }).then((disciplina) =>
                 res.status(200).json({
                     success: true,
                     status: 200,
@@ -78,7 +78,7 @@ exports.update = async (req, res) => {
         const disciplina = await db.Disciplina.update(
             req.body,
             { where: { id_disciplina: req.params.id } }
-        ).then(
+        ).then((disciplina) =>
             res.status(200).json({
                 success: true,
                 status: 200,
@@ -101,7 +101,7 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.destroy({ where: { id_disciplina: req.params.id } }).then(
+        const disciplina = await db.Disciplina.destroy({ where: { id_disciplina: req.params.id } }).then((disciplina) =>
             res.status(200).json({
                 success: true,
                 status: 200,
