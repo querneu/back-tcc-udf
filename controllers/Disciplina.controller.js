@@ -1,10 +1,8 @@
-'use strict';
 const db = require('../models');
-
 exports.create = async (req, res) => {
     const data = req.body;
     try {
-        const disciplina = await db.Disciplina.create(data).then((disciplina) =>
+        const disciplina = await db.Disciplina.create(data).then((response) =>
             res.status(200).json({
                 success: true,
                 status: 200,

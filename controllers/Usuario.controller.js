@@ -1,4 +1,3 @@
-'use strict';
 const { Usuario } = require('../models');
 const bcrypt = require('bcrypt');
 exports.register = async (req, res) => {

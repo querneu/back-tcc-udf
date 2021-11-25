@@ -1,4 +1,3 @@
-'use strict';
 const { Sequelize } = require('../models');
 const db = require('../models');
 

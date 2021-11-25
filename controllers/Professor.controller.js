@@ -1,4 +1,3 @@
-'use strict';
 const db = require('../models');
 
 exports.create = async (req, res) => {
