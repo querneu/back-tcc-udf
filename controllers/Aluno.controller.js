@@ -5,14 +5,14 @@ exports.create = async (req, res) => {
     const data = req.body;
     try {
         const aluno = await db.Aluno.create(data).then(
-            res.status(200).JSON({
+            res.status(200).json({
                 success: true,
                 status: 200,
-                message: "aluno criado com sucesso",
+                message: "Aluno criado com sucesso",
                 data: aluno
             })
         ).catch((err) => {
-            res.send(400).JSON({
+            res.send(400).json({
                 success: false,
                 status: 400,
                 message: "Erro ao criar aluno!",
@@ -29,14 +29,14 @@ exports.findAll = async (req, res) => {
         const aluno = await db.Aluno.findAll(
             { include: [{ all: true }] }
         ).then(
-            res.status(200).JSON({
+            res.status(200).json({
                 success: true,
                 status: 200,
-                message: "alunos encontrados",
+                message: "Alunos encontrados",
                 data: aluno
             })
         ).catch((err) => {
-            res.send(400).JSON({
+            res.send(400).json({
                 success: false,
                 status: 400,
                 message: "Erro ao listar alunos!",
@@ -48,20 +48,20 @@ exports.findAll = async (req, res) => {
     }
 }
 
-exports.findById = async (req, res) => {
+exports.findByPk = async (req, res) => {
     try {
         const aluno = await db.Aluno.findByPk(req.params.id,
             {
                 include: [{ all: true }]
             }).then(
-                res.status(200).JSON({
+                res.status(200).json({
                     success: true,
                     status: 200,
-                    message: "aluno encontrado",
+                    message: "Aluno encontrado",
                     data: aluno
                 })
             ).catch((err) => {
-                res.send(400).JSON({
+                res.send(400).json({
                     success: false,
                     status: 400,
                     message: "Erro ao listar aluno!",
@@ -79,14 +79,14 @@ exports.update = async (req, res) => {
             req.body,
             { where: { id_aluno: req.params.id } }
         ).then(
-            res.status(200).JSON({
+            res.status(200).json({
                 success: true,
                 status: 200,
-                message: "aluno criado com sucesso",
+                message: "Aluno criado com sucesso",
                 data: aluno
             })
         ).catch((err) => {
-            res.send(400).JSON({
+            res.send(400).json({
                 success: false,
                 status: 400,
                 message: "Erro ao criar aluno!",
@@ -102,14 +102,14 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const aluno = await db.Aluno.destroy({ where: { id_aluno: req.params.id } }).then(
-            res.status(200).JSON({
+            res.status(200).json({
                 success: true,
                 status: 200,
-                message: "aluno deletado com sucesso",
+                message: "Aluno deletado com sucesso",
                 data: aluno
             })
         ).catch((err) => {
-            res.send(400).JSON({
+            res.send(400).json({
                 success: false,
                 status: 400,
                 message: "Erro ao deletar aluno!",

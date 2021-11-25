@@ -4,18 +4,18 @@ const db = require('../models');
 exports.create = async (req, res) => {
     const data = req.body;
     try {
-        const disciplina = await db.Disciplina.create(data).then(
+        const dia = await db.Dia.create(data).then(
             res.status(200).json({
                 success: true,
                 status: 200,
-                message: "disciplina criado com sucesso",
-                data: disciplina
+                message: "Dia criado com sucesso",
+                data: dia
             })
         ).catch((err) => {
             res.send(400).json({
                 success: false,
                 status: 400,
-                message: "Erro ao criar disciplina!",
+                message: "Erro ao criar dia!",
                 info: err
             })
         });
@@ -26,20 +26,20 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.findAll(
+        const dia = await db.Dia.findAll(
             { include: [{ all: true }] }
         ).then(
             res.status(200).json({
                 success: true,
                 status: 200,
-                message: "disciplinas encontrados",
-                data: disciplina
+                message: "Dias encontrados",
+                data: dia
             })
         ).catch((err) => {
             res.send(400).json({
                 success: false,
                 status: 400,
-                message: "Erro ao listar disciplinas!",
+                message: "Erro ao listar dias!",
                 info: err
             })
         });
@@ -48,23 +48,23 @@ exports.findAll = async (req, res) => {
     }
 }
 
-exports.findById = async (req, res) => {
+exports.findByPk = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.findByPk(req.params.id,
+        const dia = await db.Dia.findByPk(req.params.id,
             {
                 include: [{ all: true }]
             }).then(
                 res.status(200).json({
                     success: true,
                     status: 200,
-                    message: "disciplina encontrado",
-                    data: disciplina
+                    message: "Dia encontrado",
+                    data: dia
                 })
             ).catch((err) => {
                 res.send(400).json({
                     success: false,
                     status: 400,
-                    message: "Erro ao listar disciplina!",
+                    message: "Erro ao listar dia!",
                     info: err
                 })
             });
@@ -75,21 +75,21 @@ exports.findById = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.update(
+        const dia = await db.Dia.update(
             req.body,
-            { where: { id_disciplina: req.params.id } }
+            { where: { id_dia: req.params.id } }
         ).then(
             res.status(200).json({
                 success: true,
                 status: 200,
-                message: "disciplina criado com sucesso",
-                data: disciplina
+                message: "Dia criado com sucesso",
+                data: dia
             })
         ).catch((err) => {
             res.send(400).json({
                 success: false,
                 status: 400,
-                message: "Erro ao criar disciplina!",
+                message: "Erro ao criar dia!",
                 info: err
             })
         });
@@ -101,18 +101,18 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.destroy({ where: { id_disciplina: req.params.id } }).then(
+        const dia = await db.Dia.destroy({ where: { id_dia: req.params.id } }).then(
             res.status(200).json({
                 success: true,
                 status: 200,
-                message: "disciplina deletado com sucesso",
-                data: disciplina
+                message: "Dia deletado com sucesso",
+                data: dia
             })
         ).catch((err) => {
             res.send(400).json({
                 success: false,
                 status: 400,
-                message: "Erro ao deletar disciplina!",
+                message: "Erro ao deletar dia!",
                 info: err
             })
         });

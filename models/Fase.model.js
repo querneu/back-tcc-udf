@@ -1,16 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
-    const Ano = sequelize.define("Ano", {
-        id_ano: {
+    const Fase = sequelize.define("Fase", {
+        id_fase: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        nome_ano: {
+        nome_fase: {
             type: DataTypes.STRING,
         },
         is_active: {
             type: DataTypes.STRING,
         }
     });
-    return Ano;
+    return Fase;
 };

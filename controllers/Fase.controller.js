@@ -4,18 +4,19 @@ const db = require('../models');
 exports.create = async (req, res) => {
     const data = req.body;
     try {
-        const disciplina = await db.Disciplina.create(data).then(
+        const fase = await db.Fase.create(data).then(
             res.status(200).json({
                 success: true,
                 status: 200,
-                message: "disciplina criado com sucesso",
-                data: disciplina
+                message: "Fase criado com sucesso",
+                data: fase
             })
+           
         ).catch((err) => {
             res.send(400).json({
                 success: false,
                 status: 400,
-                message: "Erro ao criar disciplina!",
+                message: "Erro ao criar fase!",
                 info: err
             })
         });
@@ -26,20 +27,20 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.findAll(
+        const fase = await db.Fase.findAll(
             { include: [{ all: true }] }
         ).then(
             res.status(200).json({
                 success: true,
                 status: 200,
-                message: "disciplinas encontrados",
-                data: disciplina
+                message: "Fases encontrados",
+                data: fase
             })
         ).catch((err) => {
             res.send(400).json({
                 success: false,
                 status: 400,
-                message: "Erro ao listar disciplinas!",
+                message: "Erro ao listar fases!",
                 info: err
             })
         });
@@ -48,23 +49,23 @@ exports.findAll = async (req, res) => {
     }
 }
 
-exports.findById = async (req, res) => {
+exports.findByPk = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.findByPk(req.params.id,
+        const fase = await db.Fase.findByPk(req.params.id,
             {
                 include: [{ all: true }]
             }).then(
                 res.status(200).json({
                     success: true,
                     status: 200,
-                    message: "disciplina encontrado",
-                    data: disciplina
+                    message: "Fase encontrado",
+                    data: fase
                 })
             ).catch((err) => {
                 res.send(400).json({
                     success: false,
                     status: 400,
-                    message: "Erro ao listar disciplina!",
+                    message: "Erro ao listar fase!",
                     info: err
                 })
             });
@@ -75,21 +76,21 @@ exports.findById = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.update(
+        const fase = await db.Fase.update(
             req.body,
-            { where: { id_disciplina: req.params.id } }
+            { where: { id_fase: req.params.id } }
         ).then(
             res.status(200).json({
                 success: true,
                 status: 200,
-                message: "disciplina criado com sucesso",
-                data: disciplina
+                message: "Fase criado com sucesso",
+                data: fase
             })
         ).catch((err) => {
             res.send(400).json({
                 success: false,
                 status: 400,
-                message: "Erro ao criar disciplina!",
+                message: "Erro ao criar fase!",
                 info: err
             })
         });
@@ -101,18 +102,18 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const disciplina = await db.Disciplina.destroy({ where: { id_disciplina: req.params.id } }).then(
+        const fase = await db.Fase.destroy({ where: { id_fase: req.params.id } }).then(
             res.status(200).json({
                 success: true,
                 status: 200,
-                message: "disciplina deletado com sucesso",
-                data: disciplina
+                message: "Fase deletado com sucesso",
+                data: fase
             })
         ).catch((err) => {
             res.send(400).json({
                 success: false,
                 status: 400,
-                message: "Erro ao deletar disciplina!",
+                message: "Erro ao deletar fase!",
                 info: err
             })
         });
