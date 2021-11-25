@@ -4,7 +4,7 @@ const AnoController = require('../controllers/Ano.controller')
 
 routes.post("/", AnoController.create);
 routes.get("/", AnoController.findAll);
-routes.get("/:id", AnoController.findById);
+routes.get("/:id", AnoController.findOne);
 routes.put("/:id", AnoController.update);
 routes.delete("/:id", AnoController.delete);
 
