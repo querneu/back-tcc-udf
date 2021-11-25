@@ -25,22 +25,22 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
     const result = await db.Disciplina.findAll(
         { include: [{ all: true }] }
-    ).then((error, disciplina) => {
-        res.status(200).json({
-            success: true,
-            status: 200,
-            message: "disciplinas encontrados",
-            data: disciplina
-        })
-    }
-    ).catch((err) => {
-        res.send(400).json({
-            success: false,
-            status: 400,
-            message: "Erro ao listar disciplinas!",
-            info: err
-        })
-    });
+    )
+        .then((disciplina) =>
+            res.status(200).json({
+                success: true,
+                status: 200,
+                message: "disciplinas encontrados",
+                data: disciplina
+            }))
+        .catch((err) => {
+            res.send(400).json({
+                success: false,
+                status: 400,
+                message: "Erro ao listar disciplinas!",
+                info: err
+            })
+        });
 }
 
 exports.findById = async (req, res) => {
