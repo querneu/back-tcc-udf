@@ -8,6 +8,7 @@ const CustomAuthMiddleware = require('./middleware/CustomAuth.middleware');
 const AnoRoutes = require('./routes/Ano.routes');
 const DiaRoutes = require('./routes/Dia.routes');
 const FaseRoutes = require('./routes/Fase.routes');
+const TurnoRoutes = require('./routes/Turno.routes');
 const UsuarioRoutes = require('./routes/Usuario.routes');
 const DisciplinaRoutes = require('./routes/Disciplina.routes');
 
@@ -26,6 +27,7 @@ db.sequelize.sync()
         app.use('/api/ano', AnoRoutes);
         app.use('/api/dia', DiaRoutes);
         app.use('/api/fase', FaseRoutes);
+        app.use('/api/turno', TurnoRoutes);
         app.use('/api/disciplina', DisciplinaRoutes);
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
