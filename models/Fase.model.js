@@ -12,5 +12,12 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         }
     });
+    Fase.associate = function (models) {
+        Fase.hasMany(models.Serie, {
+            sourceKey: 'id_fase',
+            foreignKey: 'fk_fase'
+        }
+        );
+    }
     return Fase;
 };

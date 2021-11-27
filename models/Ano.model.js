@@ -12,5 +12,12 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         }
     });
+    Ano.associate = function (models) {
+        Ano.hasMany(models.Serie, {
+            sourceKey: 'id_ano', 
+            foreignKey: 'fk_ano'
+        }
+        );
+    }
     return Ano;
 };
