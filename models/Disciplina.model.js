@@ -12,5 +12,17 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         }
     });
+    
+    Disciplina.associate = function (models) {
+        Disciplina.hasMany(models.Materia, {
+            sourceKey: 'id_disciplina', 
+            foreignKey: 'fk_disciplina'
+        }
+        )
+        Disciplina.hasMany(models.Serie,{
+            sourceKey: 'id_serie',
+            foreignKey: 'fk_serie'
+        })
+    }
     return Disciplina;
 };
