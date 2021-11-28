@@ -6,7 +6,7 @@ exports.create = async (req, res) => {
         res.status(200).json({
             success: true,
             status: 200,
-            message: `Horario ${req.body.horario} criado com sucesso!`,
+            message: `Horario ${req.body.nome_horario} criado com sucesso!`,
             data: horario
         })
     }).catch((err) => {
@@ -82,12 +82,12 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
     const horario = await db.Horario.update(
         req.body,
-        { where: { horario: req.params.id } }
+        { where: { id_horario: req.params.id } }
     ).then((horario) => {
         res.status(200).json({
             success: true,
             status: 200,
-            message: `Horario ${req.body.horario} atualizado com sucesso!`,
+            message: `Horario ${req.body.nome_horario} atualizado com sucesso!`,
             data: horario
         })
     }).catch((err) => {
@@ -101,7 +101,7 @@ exports.update = async (req, res) => {
 }
 
 exports.delete = async (req, res) => {
-    const horario = await db.Horario.destroy({ where: { horario: req.params.id } }).then((horario) => {
+    const horario = await db.Horario.destroy({ where: { id_horario: req.params.id } }).then((horario) => {
         res.status(200).json({
             success: true,
             status: 200,
