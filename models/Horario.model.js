@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey : 'fk_turno',
         });
         Horario.belongsTo(models.Dia, {
+            as: "Dias",
             targetKey:'id_dia',
             foreignKey : 'fk_dia',
         });
