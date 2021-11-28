@@ -12,5 +12,12 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         }
     });
+    Dia.associate = function (models) {
+        Dia.hasMany(models.Horario, {
+            sourceKey: 'id_dia', 
+            foreignKey: 'fk_dia'
+        });
+    }
+    
     return Dia;
 };
