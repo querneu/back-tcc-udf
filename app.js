@@ -6,6 +6,7 @@ const PORT = 3006;
 const db = require('./models');
 const CustomAuthMiddleware = require('./middleware/CustomAuth.middleware');
 const AnoRoutes = require('./routes/Ano.routes');
+const TurmaRoutes = require('./routes/Turma.routes');
 const DiaRoutes = require('./routes/Dia.routes');
 const AulaRoutes = require('./routes/Aula.routes');
 const FaseRoutes = require('./routes/Fase.routes');
@@ -31,6 +32,7 @@ db.sequelize.sync()
     .then((result) => {
         app.use('/', UsuarioRoutes);
         app.use('/api/ano', AnoRoutes);
+        app.use('/api/turma', TurmaRoutes);
         app.use('/api/dia', DiaRoutes);
         app.use('/api/aula', AulaRoutes);
         app.use('/api/fase', FaseRoutes);
