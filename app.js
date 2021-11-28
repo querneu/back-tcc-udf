@@ -7,6 +7,7 @@ const db = require('./models');
 const CustomAuthMiddleware = require('./middleware/CustomAuth.middleware');
 const AnoRoutes = require('./routes/Ano.routes');
 const DiaRoutes = require('./routes/Dia.routes');
+const AulaRoutes = require('./routes/Aula.routes');
 const FaseRoutes = require('./routes/Fase.routes');
 const TurnoRoutes = require('./routes/Turno.routes');
 const ProfessorRoutes = require('./routes/Professor.routes');
@@ -30,6 +31,7 @@ db.sequelize.sync()
         app.use('/', UsuarioRoutes);
         app.use('/api/ano', AnoRoutes);
         app.use('/api/dia', DiaRoutes);
+        app.use('/api/aula', AulaRoutes);
         app.use('/api/fase', FaseRoutes);
         app.use('/api/turno', TurnoRoutes);
         app.use('/api/serie', SerieRoutes);
