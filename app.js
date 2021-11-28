@@ -35,7 +35,7 @@ db.sequelize.sync()
         app.use('/api/fase', FaseRoutes);
         app.use('/api/turno', TurnoRoutes);
         app.use('/api/serie', SerieRoutes);
-        app.use('/api/serie', HorarioRoutes);
+        app.use('/api/horario', HorarioRoutes);
         app.use('/api/materia', MateriaRoutes);
         app.use('/api/professor', ProfessorRoutes);
         app.use('/api/disciplina', DisciplinaRoutes);
