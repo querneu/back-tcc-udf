@@ -14,15 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     });
     
     Disciplina.associate = function (models) {
-        Disciplina.hasMany(models.Serie,{
-            sourceKey: 'id_disciplina',
-            foreignKey: 'fk_serie'
-        })
         Disciplina.hasMany(models.Materia, {
-            sourceKey: 'id_disciplina', 
-            foreignKey: 'fk_disciplina'
-        }
-        );
+            sourceKey: 'id_disciplina',
+            foreignKey: 'fk_disciplina' 
+        });
     }
     return Disciplina;
 };
