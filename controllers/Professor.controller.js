@@ -6,7 +6,7 @@ exports.create = async (req, res) => {
         res.status(200).json({
             success: true,
             status: 200,
-            message: `Professor ${req.body.Professor} criado com sucesso!`,
+            message: `Professor ${req.body.nome_professor} criado com sucesso!`,
             data: professor
         })
     }).catch((err) => {
