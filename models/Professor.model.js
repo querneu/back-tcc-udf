@@ -18,5 +18,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         }
     });
+    Professor.associate = function (models) {
+        Professor.hasMany(models.Aula, {
+            sourceKey: 'id_professor',
+            foreignKey: 'fk_professor' 
+        });
+    }
     return Professor;
 };

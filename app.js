@@ -17,6 +17,9 @@ const SerieRoutes = require('./routes/Serie.routes');
 const MateriaRoutes = require('./routes/Materia.routes');
 const HorarioRoutes = require('./routes/Horario.routes');
 const ConfigRoutes = require('./routes/Config.routes');
+const AlunoRoutes = require('./routes/Aluno.routes');
+const AlunoTurmaRoutes = require('./routes/Aluno_Turma.routes');
+
 const DisciplinaRoutes = require('./routes/Disciplina.routes');
 
 app.use(express.json());
@@ -32,6 +35,8 @@ db.sequelize.sync()
     .then((result) => {
         app.use('/', UsuarioRoutes);
         app.use('/api/ano', AnoRoutes);
+        app.use('/api/aluno',AlunoRoutes);
+        app.use('/api/aluno_turma',AlunoTurmaRoutes);
         app.use('/api/turma', TurmaRoutes);
         app.use('/api/dia', DiaRoutes);
         app.use('/api/aula', AulaRoutes);
