@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
     const Aula = sequelize.define("Aula", {
-        id_Aula: {
+        id_aula: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        nome_Aula: {
+        nome_aula: {
             type: DataTypes.STRING,
         },
         is_active: {
