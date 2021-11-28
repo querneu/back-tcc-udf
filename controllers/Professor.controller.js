@@ -82,7 +82,7 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
     const professor = await db.Professor.update(
         req.body,
-        { where: { professor: req.Params.id } }
+        { where: { id_professor: req.params.id } }
     ).then((professor) => {
         res.status(200).json({
             success: true,
@@ -101,7 +101,7 @@ exports.update = async (req, res) => {
 }
 
 exports.delete = async (req, res) => {
-    const professor = await db.Professor.destroy({ where: { professor: req.Params.id } }).then((professor) => {
+    const professor = await db.Professor.destroy({ where: { id_professor: req.params.id } }).then((professor) => {
         res.status(200).json({
             success: true,
             status: 200,
