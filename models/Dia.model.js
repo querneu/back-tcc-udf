@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     Dia.associate = function (models) {
         Dia.hasMany(models.Horario, {
             sourceKey: 'id_dia', 
-            as :"Dia",
+            as :"Dia da Semana",
             foreignKey: 'fk_dia'
         });
     }
