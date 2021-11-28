@@ -14,10 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     });
     Aula.associate = function(models) {
         Aula.belongsTo(models.Professor, {
+            as: 'Professores',
             targetKey:'id_professor',
             foreignKey : 'fk_professor',
         });
         Aula.belongsTo(models.Materia, {
+            as: 'Materias',
             targetKey:'id_materia',
             foreignKey : 'fk_materia',
         });
