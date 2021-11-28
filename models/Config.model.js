@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         per_carga_hor_superior: {
             type: DataTypes.STRING,
+        },
+        des_turmas_janeiro: {
+            type: DataTypes.STRING,
+        },
+        des_turma_jul: {
+            type: DataTypes.STRING,
         }
     });
     return Config;

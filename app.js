@@ -15,6 +15,7 @@ const UsuarioRoutes = require('./routes/Usuario.routes');
 const SerieRoutes = require('./routes/Serie.routes');
 const MateriaRoutes = require('./routes/Materia.routes');
 const HorarioRoutes = require('./routes/Horario.routes');
+const ConfigRoutes = require('./routes/Config.routes');
 const DisciplinaRoutes = require('./routes/Disciplina.routes');
 
 app.use(express.json());
@@ -38,6 +39,7 @@ db.sequelize.sync()
         app.use('/api/horario', HorarioRoutes);
         app.use('/api/materia', MateriaRoutes);
         app.use('/api/professor', ProfessorRoutes);
+        app.use('/api/config', ConfigRoutes);
         app.use('/api/disciplina', DisciplinaRoutes);
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
