@@ -21,11 +21,6 @@ module.exports = (sequelize, DataTypes) => {
             targetKey:'id_fase',
             foreignKey : 'fk_fase',
         });
-        Serie.hasMany(models.Serie, {
-            sourceKey: 'id_serie',
-            foreignKey: 'fk_serie'
-        }
-        );
     }
     return Serie;
 };
