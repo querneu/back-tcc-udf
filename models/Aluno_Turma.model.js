@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
         data_matricula: {
-            type: DataTypes.STRING,
+            type: DataTypes.DATE,
         }
     });
     return Aluno_Turma;
