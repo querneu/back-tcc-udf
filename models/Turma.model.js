@@ -9,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         },
         data_inicio: {
-            type: DataTypes.STRING,
+            type: DataTypes.DATE,
         },
         data_fim: {
-            type: DataTypes.STRING,
+            type: DataTypes.DATE,
         },
         is_active: {
             type: DataTypes.STRING,
