@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
         nome_aluno: {
             type: DataTypes.STRING,
         },
-        dat_nascimento: {
-            type: DataTypes.INTEGER,
+        data_nascimento: {
+            type: DataTypes.DATE,
         },
         cod_sexo: {
             type: DataTypes.STRING,
