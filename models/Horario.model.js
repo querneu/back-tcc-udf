@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
     Horario.associate = function(models) {
+        Horario.hasMany(models.Grade, {
+            targetKey: 'id_horario', 
+            foreignKey: 'fk_horario'
+        });
         Horario.belongsTo(models.Turno, {
             targetKey:'id_turno',
             foreignKey : 'fk_turno',

@@ -6,6 +6,7 @@ const PORT = 3006;
 const db = require('./models');
 const CustomAuthMiddleware = require('./middleware/CustomAuth.middleware');
 const AnoRoutes = require('./routes/Ano.routes');
+const GradeRoutes = require('./routes/Grade.routes');
 const TurmaRoutes = require('./routes/Turma.routes');
 const DiaRoutes = require('./routes/Dia.routes');
 const AulaRoutes = require('./routes/Aula.routes');
@@ -47,6 +48,7 @@ db.sequelize.sync()
         app.use('/api/materia', MateriaRoutes);
         app.use('/api/professor', ProfessorRoutes);
         app.use('/api/config', ConfigRoutes);
+        app.use('/api/grade', GradeRoutes);
         app.use('/api/disciplina', DisciplinaRoutes);
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);

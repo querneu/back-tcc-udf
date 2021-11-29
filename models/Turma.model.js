@@ -24,7 +24,10 @@ module.exports = (sequelize, DataTypes) => {
             through: { model: models.Aluno_Turma, unique: false },
             foreignKey: 'fk_turma'
         });
-
+        Turma.hasMany(models.Grade,{
+            targetKey: 'id_turma',
+            foreignKey: 'fk_turma',
+        });
         Turma.belongsTo(models.Serie, {
             as: "Series",
             foreignKey: 'fk_serie',

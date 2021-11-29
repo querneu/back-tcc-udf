@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
     Aula.associate = function(models) {
+        Aula.hasMany(models.Grade,{
+            targetKey: 'id_aula',
+            foreignKey: 'fk_aula',
+        });
         Aula.belongsTo(models.Professor, {
             as: 'Professores',
             targetKey:'id_professor',
