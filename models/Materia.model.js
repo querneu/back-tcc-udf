@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
         nome_materia: {
             type: DataTypes.STRING,
         },
+        qtd_materia:{
+            type: DataTypes.INTEGER
+        },
         is_active: {
             type: DataTypes.STRING,
         }
