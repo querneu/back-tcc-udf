@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
             sourceKey: 'id_turno', 
             foreignKey: 'fk_turno'
         });
+        Turno.hasMany(models.Turma, {
+            sourceKey: 'id_turno', 
+            foreignKey: 'fk_turno'
+        });
     }
     return Turno;
 };

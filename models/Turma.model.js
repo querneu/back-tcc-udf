@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
             as: "Series",
             foreignKey: 'fk_serie',
         });
+        Turma.belongsTo(models.Turno, {
+            as: "Turnos",
+            foreignKey: 'fk_turno',
+        });
     }
     return Turma;
 };
