@@ -1,21 +1,30 @@
 
-// console.log("testes");
-// get the client
-const mysql = require('mysql2');
+//obter a listagem das aulas da materia
+var listaAulasDasMaterias = [[5, 2], [9, 9], [10, 10], [11, 11], [12, 12], [13, 13], [14, 14], [15, 15], [16, 16], [17, 17]];
+// console.log("listaAulasDasMaterias: " + listaAulasDasMaterias);
 
+var somaHorasMaterias = 15; //o máximo que o teste dá é 21 horas alocadas, tenho que por menos no total aqui.
+//12+12+6
+/*     (Select Sum(qtd_materia) from Materia where serie_fk = @idSerieDaTurma)     
+*/
+
+var itemGrade;
+// itemGrade = { id_horario: 1, id_aula: 1, id_turma: id_turma, id_grade: 1 }
+// grade.push(itemGrade);
+// console.log(`Horario: ${grade[0].id_horario}`);
+
+const mysql = require('mysql2');
 let fk_serie = 1; // informado pelo usuário
+const con = mysql.createConnection(
+    {
+        host: '127.0.0.1',
+        user: 'root',
+        password: 'root',
+        database: 'database_tcc_development'
+    }
+);
 pega_serie_em_turma(fk_serie);
-let ideTurno = 1; //Matutino, informado pelo usuário
-let grade = [];
 function pega_serie_em_turma(id_turma) {
-    const con = mysql.createConnection(
-        {
-            host: '127.0.0.1',
-            user: 'root',
-            password: 'root',
-            database: 'database_tcc_development'
-        }
-    );
     con.query({
         sql: `select turmas.fk_serie, series.nome_serie from turmas 
         inner join series on series.id_serie = turmas.fk_serie 
@@ -31,89 +40,56 @@ function pega_serie_em_turma(id_turma) {
     })
 }
 
-
 function pegar_materias(fk_serie) {
-    const con = mysql.createConnection(
-        {
-            host: '127.0.0.1',
-            user: 'root',
-            password: 'root',
-            database: 'database_tcc_development'
-        }
-    );
-    let teste = con.query({ sql: ` SELECT id_materia, nome_materia from Materia where fk_serie = '${fk_serie}'`, rowsAsArray: true },
-        function (err, results, fields) {
-            results.map((results) => {
-                console.log("Materia: " + results[1]);
-                //pegar_materias(results[0])
-            })
+    con.query({
+        sql: ` SELECT id_materia, nome_materia from Materia where fk_serie = '${fk_serie}'`,
+        rowsAsArray: true
+    }, function (err, results, fields) {
+        results.map((results) => {
+            console.log("Materia: " + results[1]);
+            horas_materia(results[0], fk_serie)
         })
+    })
 }
-//Id serie entra aqui
-// console.log("ideSerieDaTurma: " + ideSerieDaTurma);
 
-//(select ide_serie from turma where turma_fk = req.body.id_turma)
+function horas_materia(id_materia, fk_serie) {
+    con.query({
+        sql: `select Sum(qtd_materia) from Materia where fk_serie = '${id_materia}'`,
+        rowsAsArray: true
+    }, function (err, results, fields) {
+        results.map((results) => {
+            console.log("Horas da Materia: " + results[0]);
+            lista_aula_materias(fk_serie)
+        })
+    })
+}
 
-
-var itemGrade;
-// itemGrade = { id_horario: 1, id_aula: 1, id_turma: id_turma, id_grade: 1 }
-// grade.push(itemGrade);
-// console.log(`Horario: ${grade[0].id_horario}`);
-
-var listaMateriasDaSerie = [[1, 12, 'Português'], [2, 12, 'Matematica'], [3, 6, 'Ciências']];
-// console.log("listaMateriasDaSerie: " + listaMateriasDaSerie.slice(','));
-/*     Select ide_materia, qtd_materia, nom_materia from Materia where serie_fk = ideSerieDaTurma)
-*/
-
-
-var somaHorasMaterias = 15; //o máximo que o teste dá é 21 horas alocadas, tenho que por menos no total aqui.
-//12+12+6
-/*     (Select Sum(qtd_materia) from Materia where serie_fk = @idSerieDaTurma)     
-*/
-
-//obter a listagem das aulas da materia
-var listaAulasDasMaterias = [[5, 2], [9, 9], [10, 10], [11, 11], [12, 12], [13, 13], [14, 14], [15, 15], [16, 16], [17, 17]];
-// console.log("listaAulasDasMaterias: " + listaAulasDasMaterias);
-
-/*
-// Select só com ide's
-    (Select Aula.ide_aula, Aula.professor_fk from Aula where Aula.materia_fk in (
-     Select ide_materia from materia where serie_fk = ideSerieDaTurma
-    )
-
-  //ou com nomes também:
-    Select Aula.ide_aula, Aula.professor_fk, Aula.nom_aula, professor.nom_professor
-    from Aula 
-    inner join professor on professor.ide_professor = aula.professor_fk
-    where Aula.materia_fk in (
-            Select ide_materia from materia where serie_fk = ideSerieDaTurma
-    )
-
-    ide_aula    professor_fk    nom_aula    nom_professor
-    5           2               Matemática  Soron
-    9           9               Matemática  Naociuoth
-    10          10              Português   Alion
-    11          11              Matemática  Morki
-    12          12              História    Hunbra
-    13          13              Artes       Xuela
-    14          14              Matemática  Nabere
-    15          15              Português   Veamalump
-    16          16              PD 1 Libras Zumaival
-    17          17              História    Arloyias
-*/
-var contadorAula = new Counter();
-
-
-var ideAulaAtual = listaAulasDasMaterias[contadorAula.current()][0];
-//o primeiro [0] identifica o par (5,2), o segundo [] identifica qual valor quer obter
-var ideProfessor = listaAulasDasMaterias[contadorAula.current()][1];
-var ideAulaProx = listaAulasDasMaterias[1][0]; //exemplo para iterar entre os ide's de aula
-
-// console.log('ideAulaAtual: ' + ideAulaAtual + '; ideAulaProx = ' + ideAulaProx);
+function lista_aula_materias(fk_serie) {
+    con.query({
+        sql: `select Aulas.id_aula, Aulas.fk_professor, Aulas.nome_aula, professors.nome_professor
+        from Aulas
+        inner join professors on professors.id_professor = aulas.fk_professor
+        where Aulas.fk_materia in (
+                select id_materia from materia where fk_serie = ${fk_serie}
+        )`,
+        rowsAsArray: true
+    }, function (err, results, fields) {
+        results.map((results) => {
+            console.log(`Aulas: ${results[2]}, Professor: ${results[3]}`);
+            //lista_aula_materias(fk_serie)
+        })
+    })
+}
 
 //com o turno, dá pra saber quais horários serão preenchidos na grade.
 var listaHorariosDoTurno = [[1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 2], [8, 2], [9, 2], [10, 2], [11, 2], [12, 2]];
-/*      select ide_horario, dia_fk from Horario where turno_fk = ideTurno      */
+/*      select id_horario,fk_dia from Horarios where fk_turno = '${fk_turno}'      */
+
+var contadorAula = new Counter();
+
+
+// console.log('ideAulaAtual: ' + ideAulaAtual + '; ideAulaProx = ' + ideAulaProx);
+
 
 var gradevazia = 0;
 
