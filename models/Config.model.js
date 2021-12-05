@@ -8,19 +8,19 @@ module.exports = (sequelize, DataTypes) => {
         qtd_max_aulas: {
             type: DataTypes.STRING,
         },
-        mon_exibir_per: {
+        exibir_percentual: {
             type: DataTypes.STRING,
         },
-        per_eois_professores: {
+        per_dois_professores: {
             type: DataTypes.STRING,
         },
         per_carga_hor_superior: {
             type: DataTypes.STRING,
         },
-        des_turmas_janeiro: {
+        desativar_turmas_janeiro: {
             type: DataTypes.STRING,
         },
-        des_turma_jul: {
+        desativar_turma_jul: {
             type: DataTypes.STRING,
         }
     });
