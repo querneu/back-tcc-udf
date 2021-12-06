@@ -201,7 +201,7 @@ algoritmo = function (
           } else {
             //--------------------------INSERE
 
-            if (qtd_aula_materia == 1) {
+            if (qtd_aula_materia / 2 == 0 && qtd_aula_materia % 2 == 1) {
               maxAulasJuntasCopy = 1;
             }
             if (!checkInsert(grade, id_aula_atual, qtd_aula_materia)) {
@@ -225,6 +225,7 @@ algoritmo = function (
               nome_materia,
               qtd_aula_materia,
             }; //, ideprofessor}; //preenche um objeto para a grade
+
             grade.push(itemgrade);
 
             maxAulasJuntasCopy = maxAulasJuntasCopy - 1;
@@ -284,9 +285,14 @@ function checkInsert(grade, id_aula, qtdMaxima) {
     }
   }
   console.log(id_aula + " - " + qtdMaxima + " - SOMA: " + soma);
-  if (soma <= qtdMaxima) {
+  if (soma < qtdMaxima) {
+    console.log(true);
     return true;
-  } else return false;
+  } else {
+    console.log(false);
+
+    return false;
+  }
 }
 
 function getRandomIndiceAula(min, max) {
