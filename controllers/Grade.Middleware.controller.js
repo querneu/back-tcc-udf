@@ -163,7 +163,6 @@ algoritmo = function (
 
       while (qtdAulasAInserir > 0) {
         //roda isso fora do laço de iteração nas listas, pois precisa preservar o total original de aulas, 30, por exemplo...
-        console.log("peixe");
         //console.log(qtdAulasAInserir);
         maxQtdIndiceRandomico = aulas_em_serie.length;
         numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
@@ -205,7 +204,6 @@ algoritmo = function (
               maxAulasJuntasCopy = 1;
             }
             if (!checkInsert(grade, id_aula_atual, qtd_aula_materia)) {
-              console.log("EU DEVIA ENTRAR AQUI");
               arrayFiltroDia.push(id_aula_atual);
               numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
               id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
@@ -284,13 +282,9 @@ function checkInsert(grade, id_aula, qtdMaxima) {
       soma++;
     }
   }
-  console.log(id_aula + " - " + qtdMaxima + " - SOMA: " + soma);
   if (soma < qtdMaxima) {
-    console.log(true);
     return true;
   } else {
-    console.log(false);
-
     return false;
   }
 }
