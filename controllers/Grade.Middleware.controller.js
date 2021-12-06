@@ -137,10 +137,11 @@ algoritmo = function (id_turma, horarios_do_turno, materias_da_serie, aulas_em_s
             var arrayvazio = [];
             var grade = [];
             //Variáveis de controle
+            var id_horario;
             var naoinserirnagrade = false;  //Controlar se insere ou não na grade (evitar repetição de aulas no mesmo dia)
             var maxHorarios;                // Sera preenchido pela Lista de horarios do turno
             var ih = 0;                     //(iterador de horario) Fixo, pega tamanho das horas do turno!
-            var maxAulasJuntas=2;             //busca de Config via select qtd_max_aulas from configs where id_config = 1 //esse 1 é fixo mesmo
+            var maxAulasJuntas = 2;             //busca de Config via select qtd_max_aulas from configs where id_config = 1 //esse 1 é fixo mesmo
             var maxAulasJuntasCopy;
             var qtdAulasAInserir = 10;       //inicializa com zero, mas preenche a soma com a qtd_aulas da materia.
             var maxQtdIndiceRandomico;      // deve ser atualizado dentro dos laços quando remover um aula da lista de aulas a inserir.
@@ -156,71 +157,90 @@ algoritmo = function (id_turma, horarios_do_turno, materias_da_serie, aulas_em_s
                     soma = soma + materias_da_serie[i].qtd_materia;
                     qtdAulasAInserir = soma;
                 }
+
                 aulas_em_serieDia = aulas_em_serie.slice();
                 maxHorarios = horarios_do_turno.length;
                 while (qtdAulasAInserir > 0) {
                     if (aulas_em_serieDia.length == 0) {
-                        aulas_em_serieDia = aulas_em_serie;
+                        aulas_em_serieDia = aulas_em_serie.slice();
                     } else {
-                        maxQtdIndiceRandomico = aulas_em_serieDia.length;
-                        numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
-                        id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
-                        arrayFiltroDia.forEach((ideaula) => {
-                            if (ideaula == id_aula_atual) {
-                                naoinserirnagrade = true;
-                            }
-                        })
-                        maxAulasJuntasCopy = maxAulasJuntas; //armazena uma cópia do valor 2 do maxAulasJuntas para decrementar dentro do while.
-                        while ((maxAulasJuntasCopy) > 0 && (ih < maxHorarios)) {
-                            
-                            var index;
-                            naoinserirnagrade = false;
-                            if (arrayFiltroDia.indexOf(id_aula_atual) != -1) {//está presente
-                                naoinserirnagrade = true;
-                            }
-                            if (naoinserirnagrade) {
-                                aulas_em_serieDia.forEach(function (item) {
-                                    if (item[0] == id_aula_atual) {
-                                        index = aulas_em_serieDia.indexOf(item);
-                                        aulas_em_serieDia.splice(index, 1);
-                                    }
-                                })
-                                maxQtdIndiceRandomico = aulas_em_serieDia.length;
-                                numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
-                            } else {
-                                if ((ih % 6) == 0) {
-                                    aulas_em_serieDia = aulas_em_serie;
-                                    maxQtdIndiceRandomico = aulas_em_serieDia.length;
-                                }
-                                id_horario = horarios_do_turno[ih].id_horario;
-                                nome_dia = horarios_do_turno[ih].nome_dia;
-                                itemgrade = { id_horario, id_turma, id_aula_atual, nome_dia};//, ideprofessor}; //preenche um objeto para a grade
-                                grade.push(itemgrade); //insere no array grade //listaQtdAulasNoDia.push({ideaula : ideAulaAtual, qtdaulasnodia: 2});
-                                qtdAulasAInserir = qtdAulasAInserir - 1; //decrementa a lista de aulas a inserir, pois uma já foi inserida
-                                arrayFiltroDia.push(id_aula_atual);
-                                ih++;
-                                maxAulasJuntasCopy = maxAulasJuntasCopy - 1;
-                                if ((ih % 6) == 0) {
-                                    arrayFiltroDia = arrayvazio;
-                                }
-                            }
-                            arrayFiltroDia.push(id_aula_atual);
-                            qtdAulasAInserir = qtdAulasAInserir - 1;
+                        //roda isso fora do laço de iteração nas listas, pois precisa preservar o total original de aulas, 30, por exemplo...
+                        for (var i = 0, soma = 0, max = materias_da_serie.length; i < max; i++) {
+                            soma = soma + materias_da_serie[i].qtd_materia;
+                            qtdAulasAInserir = soma;
                         }
+                        maxHorarios = aulas_em_serie.length;
+                        while (qtdAulasAInserir > 0) {
+
+                            maxQtdIndiceRandomico = aulas_em_serie.length;
+                            numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
+                            id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
+
+                            arrayFiltroDia.forEach((ideaula) => {
+                                if (ideaula == id_aula_atual) {
+                                    naoinserirnagrade = true;
+                                }
+                            })
+
+                            maxAulasJuntasCopy = maxAulasJuntas; //armazena uma cópia do valor 2 do maxAulasJuntas para decrementar dentro do while.
+                            while ((maxAulasJuntasCopy > 0) && (ih < maxHorarios)) {
+
+                                if (arrayFiltroDia.length == aulas_em_serie.length) {
+
+                                    break;
+                                } else {
+                                    if (arrayFiltroDia.indexOf(id_aula_atual) != -1) { //está presente na lista de rejeicao
+                                        //Troca de aula
+                                        numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
+                                        id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
+                                        naoinserirnagrade = true;
+                                    }
+                                }
+
+                                id_horario = horarios_do_turno[ih].id_horario;
+
+                                if (naoinserirnagrade) {
+
+                                    naoinserirnagrade = false;
+                                }
+                                else {
+                                    id_horario = horarios_do_turno[ih].id_horario;
+                                    nome_dia = horarios_do_turno[ih].nome_dia;
+                                    itemgrade = { id_horario, id_turma, id_aula_atual, nome_dia };//, ideprofessor}; //preenche um objeto para a grade
+                                    grade.push(itemgrade);
+                                    maxAulasJuntasCopy = maxAulasJuntasCopy - 1;
+                                    if (maxAulasJuntasCopy == 0) {
+                                        arrayFiltroDia.push(id_aula_atual);
+                                    }
+
+
+                                    if ((ih % 6) == 0) {
+                                        arrayFiltroDia = arrayvazio;
+                                    }
+
+
+                                    qtdAulasAInserir = qtdAulasAInserir - 1; //decreme
+                                    ih++;
+                                }
+
+
+
+                            }
+
+
+                        }
+                        if (ih == maxHorarios) {
+                            break;
+                        }
+                        if (arrayFiltroDia.length == aulas_em_serie.length) {
+                            break;
+                        }
+
                     }
+                    console.log(grade)
+                    //resolve(grade)
+
                 }
-                for (var i = 0, x = grade.length; i < x; i++) {
-                    
-                    //itemGrade = { id_horario: 1, id_aula: 1, id_turma: id_turma, id_grade: 1 }
-                    grade[i].idegrade = i + 1;
-                    console.log("   id_grade: " + grade[i].idegrade +
-                        " - dia: " + grade[i].idedia +
-                        " - horario: " + grade[i].idehorario +
-                        " - turma:  " + grade[i].ideturma +
-                        " - aula: " + grade[i].ideaula);
-                }
-                resolve(grade)
-               
             }
         }
     )
