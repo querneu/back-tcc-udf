@@ -163,7 +163,7 @@ algoritmo = function (
 
       while (qtdAulasAInserir > 0) {
         //roda isso fora do laço de iteração nas listas, pois precisa preservar o total original de aulas, 30, por exemplo...
-
+        console.log("peixe");
         //console.log(qtdAulasAInserir);
         maxQtdIndiceRandomico = aulas_em_serie.length;
         numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
@@ -200,7 +200,18 @@ algoritmo = function (
             naoinserirnagrade = false;
           } else {
             //--------------------------INSERE
-            console.log(checkInsert(grade, id_aula_atual, qtd_aula_materia));
+
+            if (qtd_aula_materia == 1) {
+              maxAulasJuntasCopy = 1;
+            }
+            if (!checkInsert(grade, id_aula_atual, qtd_aula_materia)) {
+              console.log("EU DEVIA ENTRAR AQUI");
+              arrayFiltroDia.push(id_aula_atual);
+              numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
+              id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
+              continue;
+            }
+            //console.log(checkInsert(grade, id_aula_atual, qtd_aula_materia));
             id_horario = horarios_do_turno[ih].id_horario;
             nome_dia = horarios_do_turno[ih].nome_dia;
             nome_turma = horarios_do_turno[ih].nome_turma;
@@ -262,6 +273,7 @@ function Counter() {
 
 function checkInsert(grade, id_aula, qtdMaxima) {
   let arry = grade;
+
   let soma = 0;
   for (let i = 0; i < arry.length; i++) {
     // nested for loop
@@ -271,8 +283,10 @@ function checkInsert(grade, id_aula, qtdMaxima) {
       soma++;
     }
   }
-  //console.log(id_aula + " - " + qtdMaxima + "SOMA: " + soma);
-  return soma <= qtdMaxima ? true : false;
+  console.log(id_aula + " - " + qtdMaxima + " - SOMA: " + soma);
+  if (soma <= qtdMaxima) {
+    return true;
+  } else return false;
 }
 
 function getRandomIndiceAula(min, max) {
