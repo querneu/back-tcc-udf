@@ -134,7 +134,6 @@ algoritmo = function (
   return new Promise(function (resolve, reject) {
     //Arrays de controle
     var arrayFiltroDia = [];
-    var arrayvazio = [];
     var grade = [];
     //Variáveis de controle
     var id_horario;
@@ -164,40 +163,39 @@ algoritmo = function (
       while (qtdAulasAInserir > 0) {
         //roda isso fora do laço de iteração nas listas, pois precisa preservar o total original de aulas, 30, por exemplo...
         //console.log(qtdAulasAInserir);
+        naoinserirnagrade = false;
+
         maxQtdIndiceRandomico = aulas_em_serie.length;
         numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
         nome_materia = aulas_em_serie[numRdnPosicaoAula].nome_materia;
         id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
         qtd_aula_materia = aulas_em_serie[numRdnPosicaoAula].qtd_materia;
 
-        /* arrayFiltroDia.forEach((ideaula) => {
+        arrayFiltroDia.forEach((ideaula) => {
           if (ideaula == id_aula_atual) {
             naoinserirnagrade = true;
           }
-        }); */
+        });
 
-        maxAulasJuntasCopy = maxAulasJuntas; //armazena uma cópia do valor 2 do maxAulasJuntas para decrementar dentro do while.
-        while (maxAulasJuntasCopy > 0 && ih < maxHorarios) {
-          if (arrayFiltroDia.length == aulas_em_serie.length) {
-            break;
-          }
-
-          id_horario = horarios_do_turno[ih].id_horario;
-
-          if (naoinserirnagrade) {
-            naoinserirnagrade = false;
-          } else {
-            //--------------------------INSERE
-
-            if (!checkInsert(grade, id_aula_atual, qtd_aula_materia)) {
-              arrayFiltroDia.push(id_aula_atual);
-              numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
-              id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
-              continue;
+        if (naoinserirnagrade) {
+          continue;
+        } else {
+          maxAulasJuntasCopy = maxAulasJuntas; //armazena uma cópia do valor 2 do maxAulasJuntas para decrementar dentro do while.
+          while (maxAulasJuntasCopy > 0 && ih < maxHorarios) {
+            if (arrayFiltroDia.length == aulas_em_serie.length) {
+              break;
             }
-            /* if (qtd_aula_materia == 1) {
-              maxAulasJuntasCopy = 1;
-            } */
+
+            id_horario = horarios_do_turno[ih].id_horario;
+
+            //--------------------------INSERE
+            if (!checkInsert(grade, id_aula_atual, qtd_aula_materia)) {
+              //arrayFiltroDia.push(id_aula_atual);
+              //numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
+              //id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
+              break;
+            }
+
             //console.log(checkInsert(grade, id_aula_atual, qtd_aula_materia));
             id_horario = horarios_do_turno[ih].id_horario;
             nome_dia = horarios_do_turno[ih].nome_dia;
@@ -222,17 +220,20 @@ algoritmo = function (
 
             //--------------------------INSERE
 
-            if (ih % 6 == 0 && ih != 0) {
-              arrayFiltroDia = arrayvazio;
-            }
-            console.log(arrayFiltroDia);
+            //Removido pois não queremos que a aula que termina um dia começe o outro
+            /* if (ih % 6 == 0 && ih != 0) {  
+              maxAulasJuntasCopy = maxAulasJuntas;
+            } */
+
             console.log("Max dia: " + maxAulasJuntasCopy + " - IH: " + ih);
+          }
+          arrayFiltroDia.push(id_aula_atual);
+          if (ih % 6 == 0 && ih != 0) {
+            console.log(arrayFiltroDia);
+            arrayFiltroDia = [];
           }
         }
 
-        arrayFiltroDia.push(id_aula_atual);
-
-        //console.log(ih);
         if (ih == maxHorarios) {
           break;
         }
@@ -241,7 +242,7 @@ algoritmo = function (
         }
       }
 
-      console.log(grade);
+      //console.log(grade);
       console.log(
         "----------------------------------------------------------------------------------------"
       );
@@ -249,7 +250,7 @@ algoritmo = function (
         console.log(
           "ID HORA: " +
             qtd.id_horario +
-            " - Matéria: " +
+            " - " +
             qtd.nome_materia +
             " - qtd_aulas: " +
             qtd.qtd_aula_materia +
