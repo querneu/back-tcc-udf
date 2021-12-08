@@ -170,27 +170,16 @@ algoritmo = function (
         id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
         qtd_aula_materia = aulas_em_serie[numRdnPosicaoAula].qtd_materia;
 
-        arrayFiltroDia.forEach((ideaula) => {
+        /* arrayFiltroDia.forEach((ideaula) => {
           if (ideaula == id_aula_atual) {
             naoinserirnagrade = true;
           }
-        });
+        }); */
 
         maxAulasJuntasCopy = maxAulasJuntas; //armazena uma cópia do valor 2 do maxAulasJuntas para decrementar dentro do while.
         while (maxAulasJuntasCopy > 0 && ih < maxHorarios) {
           if (arrayFiltroDia.length == aulas_em_serie.length) {
             break;
-          } else {
-            if (arrayFiltroDia.indexOf(id_aula_atual) != -1) {
-              //está presente na lista de rejeicao
-              //Troca de aula
-              //console.log(arrayFiltroDia);
-              numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
-              id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
-              nome_materia = aulas_em_serie[numRdnPosicaoAula].nome_materia;
-              qtd_aula_materia = aulas_em_serie[numRdnPosicaoAula].qtd_materia;
-              naoinserirnagrade = true;
-            }
           }
 
           id_horario = horarios_do_turno[ih].id_horario;
@@ -200,15 +189,15 @@ algoritmo = function (
           } else {
             //--------------------------INSERE
 
-            if (qtd_aula_materia / 2 == 0 && qtd_aula_materia % 2 == 1) {
-              maxAulasJuntasCopy = 1;
-            }
             if (!checkInsert(grade, id_aula_atual, qtd_aula_materia)) {
               arrayFiltroDia.push(id_aula_atual);
               numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
               id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
               continue;
             }
+            /* if (qtd_aula_materia == 1) {
+              maxAulasJuntasCopy = 1;
+            } */
             //console.log(checkInsert(grade, id_aula_atual, qtd_aula_materia));
             id_horario = horarios_do_turno[ih].id_horario;
             nome_dia = horarios_do_turno[ih].nome_dia;
@@ -227,9 +216,7 @@ algoritmo = function (
             grade.push(itemgrade);
 
             maxAulasJuntasCopy = maxAulasJuntasCopy - 1;
-            if (maxAulasJuntasCopy == 0) {
-              arrayFiltroDia.push(id_aula_atual);
-            }
+
             qtdAulasAInserir = qtdAulasAInserir - 1; //decreme
             ih++;
 
@@ -238,8 +225,13 @@ algoritmo = function (
             if (ih % 6 == 0 && ih != 0) {
               arrayFiltroDia = arrayvazio;
             }
+            console.log(arrayFiltroDia);
+            console.log("Max dia: " + maxAulasJuntasCopy + " - IH: " + ih);
           }
         }
+
+        arrayFiltroDia.push(id_aula_atual);
+
         //console.log(ih);
         if (ih == maxHorarios) {
           break;
@@ -248,7 +240,23 @@ algoritmo = function (
           break;
         }
       }
+
       console.log(grade);
+      console.log(
+        "----------------------------------------------------------------------------------------"
+      );
+      grade.forEach((qtd) => {
+        console.log(
+          "ID HORA: " +
+            qtd.id_horario +
+            " - Matéria: " +
+            qtd.nome_materia +
+            " - qtd_aulas: " +
+            qtd.qtd_aula_materia +
+            " - Dia: " +
+            qtd.nome_dia
+        );
+      });
       //resolve(grade);
     }
   });
@@ -274,6 +282,7 @@ function checkInsert(grade, id_aula, qtdMaxima) {
   let arry = grade;
 
   let soma = 0;
+
   for (let i = 0; i < arry.length; i++) {
     // nested for loop
     // check if elements' values are equal
@@ -283,6 +292,9 @@ function checkInsert(grade, id_aula, qtdMaxima) {
     }
   }
   if (soma < qtdMaxima) {
+    if (qtdMaxima - soma == 1) {
+      maxAulasJuntasCopy = 1;
+    }
     return true;
   } else {
     return false;
