@@ -170,6 +170,9 @@ algoritmo = function (
         nome_materia = aulas_em_serie[numRdnPosicaoAula].nome_materia;
         id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
         qtd_aula_materia = aulas_em_serie[numRdnPosicaoAula].qtd_materia;
+        nome_professor = aulas_em_serie[numRdnPosicaoAula].nome_professor;
+        qtd_horas_trabalho =
+          aulas_em_serie[numRdnPosicaoAula].qtd_horas_trabalho;
 
         arrayFiltroDia.forEach((ideaula) => {
           if (ideaula == id_aula_atual) {
@@ -189,7 +192,15 @@ algoritmo = function (
             id_horario = horarios_do_turno[ih].id_horario;
 
             //--------------------------INSERE
-            if (!checkInsert(grade, id_aula_atual, qtd_aula_materia)) {
+            if (
+              !checkInsert(
+                grade,
+                id_aula_atual,
+                qtd_aula_materia,
+                nome_professor,
+                qtd_horas_trabalho
+              )
+            ) {
               //arrayFiltroDia.push(id_aula_atual);
               //numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
               //id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
@@ -209,6 +220,8 @@ algoritmo = function (
               nome_turma,
               nome_materia,
               qtd_aula_materia,
+              nome_professor,
+              qtd_horas_trabalho,
             }; //, ideprofessor}; //preenche um objeto para a grade
 
             grade.push(itemgrade);
@@ -279,10 +292,17 @@ function Counter() {
   };
 }
 
-function checkInsert(grade, id_aula, qtdMaxima) {
+function checkInsert(
+  grade,
+  id_aula,
+  qtdMaxima,
+  nome_professor,
+  qtdHorasTrabalho
+) {
   let arry = grade;
 
   let soma = 0;
+  let somaProf = 0;
 
   for (let i = 0; i < arry.length; i++) {
     // nested for loop
@@ -291,8 +311,14 @@ function checkInsert(grade, id_aula, qtdMaxima) {
       // duplicate element present
       soma++;
     }
+    if (arry[i].nome_professor === nome_professor) {
+      // duplicate element present
+
+      somaProf++;
+    }
   }
-  if (soma < qtdMaxima) {
+
+  if (soma < qtdMaxima && somaProf < qtdHorasTrabalho) {
     if (qtdMaxima - soma == 1) {
       maxAulasJuntasCopy = 1;
     }
