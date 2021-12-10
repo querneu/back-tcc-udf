@@ -212,7 +212,7 @@ algoritmo = function (
 
             //--------------------------INSERE
             if (checkInsertAulaColide(nome_professor, id_horario, id_turma)) {
-              continue;
+              break;
             }
             if (
               !checkInsert(
