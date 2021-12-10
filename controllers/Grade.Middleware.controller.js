@@ -160,7 +160,7 @@ algoritmo = function (
     var ih = 0; //(iterador de horario) Fixo, pega tamanho das horas do turno!
     var maxAulasJuntas = 2; //busca de Config via select qtd_max_aulas from configs where id_config = 1 //esse 1 é fixo mesmo
     var maxAulasJuntasCopy;
-    var qtdAulasAInserir = 10; //inicializa com zero, mas preenche a soma com a qtd_aulas da materia.
+    var qtdAulasAInserir = 0; //inicializa com zero, mas preenche a soma com a qtd_aulas da materia.
     var maxQtdIndiceRandomico; // deve ser atualizado dentro dos laços quando remover um aula da lista de aulas a inserir.
     var numRdnPosicaoAula; //variável que vai receber um indice randomico para selecionar uma materia
     var itemgrade; //montar um registro em memoria para preencher o vetor de grade
@@ -211,7 +211,7 @@ algoritmo = function (
             id_horario = horarios_do_turno[ih].id_horario;
 
             //--------------------------INSERE
-            if (checkInsertAulaColide(nome_professor, id_horario, id_turma)) {
+            if (!checkInsertAulaColide(nome_professor, id_horario, id_turma)) {
               break;
             }
             if (
