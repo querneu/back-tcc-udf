@@ -8,7 +8,7 @@ const con = mysql.createConnection({
   database: "database_tcc_development",
 });
 
-/*  -----------------------Funcções Principais ---------------*/
+/*  -----------------------Funções Principais ---------------*/
 
 pega_serie_em_turma = function (id_turma) {
   return new Promise(function (resolve, reject) {
@@ -19,6 +19,21 @@ pega_serie_em_turma = function (id_turma) {
                 AND turmas.is_active= 'Sim'
                 AND series.is_active= 'Sim'
                             `,
+      function (err, rows) {
+        if (rows === undefined) {
+          reject(new Error("Error rows is undefined"));
+        } else {
+          resolve(rows[0]);
+        }
+      }
+    );
+  });
+};
+
+listar_turmas = function () {
+  return new Promise(function (resolve, reject) {
+    con.query(
+      `select turmas.id_turma, turmas.nome_turma from turmas WHERE turmas.is_active= 'Sim'`,
       function (err, rows) {
         if (rows === undefined) {
           reject(new Error("Error rows is undefined"));
@@ -125,156 +140,169 @@ listar_aula_em_materia = function (fk_serie) {
   });
 };
 
-algoritmo = function (
-  id_turma,
-  horarios_do_turno,
-  materias_da_serie,
-  aulas_em_serie
-) {
-  return new Promise(function (resolve, reject) {
-    //Arrays de controle
-    var arrayFiltroDia = [];
-    var grade = [];
-    //Variáveis de controle
-    var id_horario;
-    var naoinserirnagrade = false; //Controlar se insere ou não na grade (evitar repetição de aulas no mesmo dia)
-    var maxHorarios; // Sera preenchido pela Lista de horarios do turno
-    var ih = 0; //(iterador de horario) Fixo, pega tamanho das horas do turno!
-    var maxAulasJuntas = 2; //busca de Config via select qtd_max_aulas from configs where id_config = 1 //esse 1 é fixo mesmo
-    var maxAulasJuntasCopy;
-    var qtdAulasAInserir = 10; //inicializa com zero, mas preenche a soma com a qtd_aulas da materia.
-    var maxQtdIndiceRandomico; // deve ser atualizado dentro dos laços quando remover um aula da lista de aulas a inserir.
-    var numRdnPosicaoAula; //variável que vai receber um indice randomico para selecionar uma materia
-    var itemgrade; //montar um registro em memoria para preencher o vetor de grade
-    var nome_materia;
+var grade_completa = [];
+listar_turmas.forEach(() => {
+  algoritmo = function (
+    id_turma,
+    horarios_do_turno,
+    materias_da_serie,
+    aulas_em_serie,
+    listar_turmas
+  ) {
+    return new Promise(function (resolve, reject) {
+      //Arrays de controle
+      var arrayFiltroDia = [];
+      var grade = [];
+      //Variáveis de controle
+      var id_horario;
+      var naoinserirnagrade = false; //Controlar se insere ou não na grade (evitar repetição de aulas no mesmo dia)
+      var maxHorarios; // Sera preenchido pela Lista de horarios do turno
+      var ih = 0; //(iterador de horario) Fixo, pega tamanho das horas do turno!
+      var maxAulasJuntas = 2; //busca de Config via select qtd_max_aulas from configs where id_config = 1 //esse 1 é fixo mesmo
+      var maxAulasJuntasCopy;
+      var qtdAulasAInserir = 10; //inicializa com zero, mas preenche a soma com a qtd_aulas da materia.
+      var maxQtdIndiceRandomico; // deve ser atualizado dentro dos laços quando remover um aula da lista de aulas a inserir.
+      var numRdnPosicaoAula; //variável que vai receber um indice randomico para selecionar uma materia
+      var itemgrade; //montar um registro em memoria para preencher o vetor de grade
+      var nome_materia;
 
-    if (!horarios_do_turno || !materias_da_serie || !aulas_em_serie) {
-      reject(new Error("Valores não inseridos"));
-    } else {
-      //roda isso fora do laço de iteração nas listas, pois precisa preservar o total original de aulas, 30, por exemplo...
-      for (var i = 0, soma = 0, max = materias_da_serie.length; i < max; i++) {
-        soma = soma + materias_da_serie[i].qtd_materia;
-        qtdAulasAInserir = soma;
-      }
-
-      aulas_em_serieDia = aulas_em_serie.slice();
-      maxHorarios = horarios_do_turno.length;
-
-      while (qtdAulasAInserir > 0) {
+      if (!horarios_do_turno || !materias_da_serie || !aulas_em_serie) {
+        reject(new Error("Valores não inseridos"));
+      } else {
         //roda isso fora do laço de iteração nas listas, pois precisa preservar o total original de aulas, 30, por exemplo...
-        //console.log(qtdAulasAInserir);
-        naoinserirnagrade = false;
 
-        maxQtdIndiceRandomico = aulas_em_serie.length;
-        numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
-        nome_materia = aulas_em_serie[numRdnPosicaoAula].nome_materia;
-        id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
-        qtd_aula_materia = aulas_em_serie[numRdnPosicaoAula].qtd_materia;
-        nome_professor = aulas_em_serie[numRdnPosicaoAula].nome_professor;
-        qtd_horas_trabalho =
-          aulas_em_serie[numRdnPosicaoAula].qtd_horas_trabalho;
+        for (
+          var i = 0, soma = 0, max = materias_da_serie.length;
+          i < max;
+          i++
+        ) {
+          soma = soma + materias_da_serie[i].qtd_materia;
+          qtdAulasAInserir = soma;
+        }
 
-        arrayFiltroDia.forEach((ideaula) => {
-          if (ideaula == id_aula_atual) {
-            naoinserirnagrade = true;
-          }
-        });
+        aulas_em_serieDia = aulas_em_serie.slice();
+        maxHorarios = horarios_do_turno.length;
 
-        if (naoinserirnagrade) {
-          continue;
-        } else {
-          maxAulasJuntasCopy = maxAulasJuntas; //armazena uma cópia do valor 2 do maxAulasJuntas para decrementar dentro do while.
-          while (maxAulasJuntasCopy > 0 && ih < maxHorarios) {
-            if (arrayFiltroDia.length == aulas_em_serie.length) {
-              break;
+        while (qtdAulasAInserir > 0) {
+          //roda isso fora do laço de iteração nas listas, pois precisa preservar o total original de aulas, 30, por exemplo...
+          //console.log(qtdAulasAInserir);
+          naoinserirnagrade = false;
+
+          maxQtdIndiceRandomico = aulas_em_serie.length;
+          numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
+          nome_materia = aulas_em_serie[numRdnPosicaoAula].nome_materia;
+          id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
+          qtd_aula_materia = aulas_em_serie[numRdnPosicaoAula].qtd_materia;
+          nome_professor = aulas_em_serie[numRdnPosicaoAula].nome_professor;
+          qtd_horas_trabalho =
+            aulas_em_serie[numRdnPosicaoAula].qtd_horas_trabalho;
+
+          arrayFiltroDia.forEach((ideaula) => {
+            if (ideaula == id_aula_atual) {
+              naoinserirnagrade = true;
             }
+          });
 
-            id_horario = horarios_do_turno[ih].id_horario;
+          if (naoinserirnagrade) {
+            continue;
+          } else {
+            maxAulasJuntasCopy = maxAulasJuntas; //armazena uma cópia do valor 2 do maxAulasJuntas para decrementar dentro do while.
+            while (maxAulasJuntasCopy > 0 && ih < maxHorarios) {
+              if (arrayFiltroDia.length == aulas_em_serie.length) {
+                break;
+              }
 
-            //--------------------------INSERE
-            if (
-              !checkInsert(
-                grade,
+              id_horario = horarios_do_turno[ih].id_horario;
+
+              //--------------------------INSERE
+              if (checkInsertAulaColide(nome_professor, id_horario, id_turma)) {
+                continue;
+              }
+              if (
+                !checkInsert(
+                  grade,
+                  id_aula_atual,
+                  qtd_aula_materia,
+                  nome_professor,
+                  qtd_horas_trabalho
+                )
+              ) {
+                //arrayFiltroDia.push(id_aula_atual);
+                //numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
+                //id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
+                break;
+              }
+
+              //console.log(checkInsert(grade, id_aula_atual, qtd_aula_materia));
+              id_horario = horarios_do_turno[ih].id_horario;
+              nome_dia = horarios_do_turno[ih].nome_dia;
+              nome_turma = horarios_do_turno[ih].nome_turma;
+
+              itemgrade = {
+                id_horario,
+                id_turma,
                 id_aula_atual,
+                nome_dia,
+                nome_turma,
+                nome_materia,
                 qtd_aula_materia,
                 nome_professor,
-                qtd_horas_trabalho
-              )
-            ) {
-              //arrayFiltroDia.push(id_aula_atual);
-              //numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
-              //id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
-              break;
-            }
+                qtd_horas_trabalho,
+              }; //, ideprofessor}; //preenche um objeto para a grade
 
-            //console.log(checkInsert(grade, id_aula_atual, qtd_aula_materia));
-            id_horario = horarios_do_turno[ih].id_horario;
-            nome_dia = horarios_do_turno[ih].nome_dia;
-            nome_turma = horarios_do_turno[ih].nome_turma;
+              grade.push(itemgrade);
 
-            itemgrade = {
-              id_horario,
-              id_turma,
-              id_aula_atual,
-              nome_dia,
-              nome_turma,
-              nome_materia,
-              qtd_aula_materia,
-              nome_professor,
-              qtd_horas_trabalho,
-            }; //, ideprofessor}; //preenche um objeto para a grade
+              maxAulasJuntasCopy = maxAulasJuntasCopy - 1;
 
-            grade.push(itemgrade);
+              qtdAulasAInserir = qtdAulasAInserir - 1; //decreme
+              ih++;
 
-            maxAulasJuntasCopy = maxAulasJuntasCopy - 1;
+              //--------------------------INSERE
 
-            qtdAulasAInserir = qtdAulasAInserir - 1; //decreme
-            ih++;
-
-            //--------------------------INSERE
-
-            //Removido pois não queremos que a aula que termina um dia começe o outro
-            /* if (ih % 6 == 0 && ih != 0) {  
+              //Removido pois não queremos que a aula que termina um dia começe o outro
+              /* if (ih % 6 == 0 && ih != 0) {  
               maxAulasJuntasCopy = maxAulasJuntas;
             } */
 
-            console.log("Max dia: " + maxAulasJuntasCopy + " - IH: " + ih);
+              console.log("Max dia: " + maxAulasJuntasCopy + " - IH: " + ih);
+            }
+            arrayFiltroDia.push(id_aula_atual);
+            if (ih % 6 == 0 && ih != 0) {
+              console.log(arrayFiltroDia);
+              arrayFiltroDia = [];
+            }
           }
-          arrayFiltroDia.push(id_aula_atual);
-          if (ih % 6 == 0 && ih != 0) {
-            console.log(arrayFiltroDia);
-            arrayFiltroDia = [];
+
+          if (ih == maxHorarios) {
+            break;
+          }
+          if (arrayFiltroDia.length == aulas_em_serie.length) {
+            break;
           }
         }
 
-        if (ih == maxHorarios) {
-          break;
-        }
-        if (arrayFiltroDia.length == aulas_em_serie.length) {
-          break;
-        }
-      }
-
-      //console.log(grade);
-      console.log(
-        "----------------------------------------------------------------------------------------"
-      );
-      grade.forEach((qtd) => {
+        //console.log(grade);
         console.log(
-          "ID HORA: " +
-            qtd.id_horario +
-            " - " +
-            qtd.nome_materia +
-            " - qtd_aulas: " +
-            qtd.qtd_aula_materia +
-            " - Dia: " +
-            qtd.nome_dia
+          "----------------------------------------------------------------------------------------"
         );
-      });
-      //resolve(grade);
-    }
-  });
-};
+        grade.forEach((qtd) => {
+          console.log(
+            "ID HORA: " +
+              qtd.id_horario +
+              " - " +
+              qtd.nome_materia +
+              " - qtd_aulas: " +
+              qtd.qtd_aula_materia +
+              " - Dia: " +
+              qtd.nome_dia
+          );
+        });
+        //resolve(grade);
+      } /*AQUI TERMINA O ELSE*/
+    });
+  };
+  grade_completa.push(grade);
+}); //Fim do FOREACH
 
 function Counter() {
   this.count = 0;
@@ -328,6 +356,23 @@ function checkInsert(
   }
 }
 
+function checkInsertAulaColide(nome_professor, id_horario, id_turma) {
+  let retorno = true;
+
+  if (grade_completa) {
+    grade_completa.forEach((grade_interna) => {
+      if (
+        nome_professor === grade_interna.nome_professor &&
+        id_horario === grade_interna.id_horario &&
+        id_turma !== grade_interna.id_turma
+      ) {
+        retorno = false;
+      }
+    });
+  }
+  return retorno;
+}
+
 function getRandomIndiceAula(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -338,5 +383,6 @@ module.exports = {
   listar_horarios_do_turno,
   listar_materias_da_serie,
   listar_aula_em_materia,
+  listar_turmas,
   algoritmo,
 };
