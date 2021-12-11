@@ -1,12 +1,18 @@
 const db = require("../models");
 const gradeMiddleWare = require("./Grade.Middleware.controller");
+const TurmaController = require('./Turma.controller');
 
 //Gerar grade
 exports.generate = async (req, res) => {
+
   //retorna um objeto serie com identificadores
   let serie = await gradeMiddleWare.pega_serie_em_turma(req.body.id_turma);
+
   //retorna um objeto turno com os identificadores
   let turno = await gradeMiddleWare.pega_turno_em_turma(req.body.id_turma);
+  //
+  let existe_turma_na_grade = await gradeMiddleWare.turma_existe_na_grade(req.body.id_turma);
+  //existe_turma_na_grade.fk_turma
   //retorna uma lista de objetos de horario com seus identificadores
   let horarios_do_turno = await gradeMiddleWare.listar_horarios_do_turno(
     turno.fk_turno,
@@ -21,15 +27,15 @@ exports.generate = async (req, res) => {
     serie.fk_serie
   );
 
-  let listar_turmas = await gradeMiddleWare.listar_turmas();
-
   let grade = await gradeMiddleWare.algoritmo(
     req.body.id_turma,
     horarios_do_turno,
     materias_da_serie,
-    aulas_em_serie
+    aulas_em_serie,
+    // listar_turmas,
   );
-  console.log(grade);
+  console.log(grade)
+  res.send(grade)
 };
 
 exports.create = async (req, res) => {

@@ -82,12 +82,12 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
     const materia = await db.Materia.update(
         req.body,
-        { where: { materia: req.Params.id } }
+        { where: { id_materia: req.Params.id } }
     ).then((materia) => {
         res.status(200).json({
             success: true,
             status: 200,
-            message: `Materia ${req.body.materia} atualizado com sucesso!`,
+            message: `Materia ${req.body.nome_materia} atualizado com sucesso!`,
             data: materia
         })
     }).catch((err) => {

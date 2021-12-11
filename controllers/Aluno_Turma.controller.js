@@ -87,7 +87,7 @@ exports.update = async (req, res) => {
         res.status(200).json({
             success: true,
             status: 200,
-            message: `Aluno em Turma ${req.body.id_aluno_turma} atualizado com sucesso!`,
+            message: `Aluno em Turma atualizado com sucesso!`,
             data: aluno_turma
         })
     }).catch((err) => {
