@@ -1,20 +1,21 @@
 const db = require('../models');
 
 exports.create = async (req, res) => {
-    const data = req.body;
+    const data = {
+        id_config: 1,
+        qtd_max_aulas: 2,
+        exibir_percentual: 0,
+        per_dois_professores: 0,
+        per_carga_hor_superior: 0,
+        desativar_turmas_janeiro: 0,
+        desativar_turma_jul: 0,
+    }
     const config = await db.Config.create(data).then((config) => {
         res.status(200).json({
             success: true,
             status: 200,
             message: `Config ${req.body.nome_config} criado com sucesso!`,
             data: config
-        })
-    }).catch((err) => {
-        res.status(400).json({
-            success: false,
-            status: 400,
-            message: "Erro ao criar config!",
-            info: err
         })
     });
 }

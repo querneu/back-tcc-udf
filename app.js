@@ -20,6 +20,7 @@ const HorarioRoutes = require('./routes/Horario.routes');
 const ConfigRoutes = require('./routes/Config.routes');
 const AlunoRoutes = require('./routes/Aluno.routes');
 const AlunoTurmaRoutes = require('./routes/Aluno_Turma.routes');
+const ConfigController = require('./controllers/Config.controller');
 
 const DisciplinaRoutes = require('./routes/Disciplina.routes');
 
@@ -34,6 +35,7 @@ app.use(express.urlencoded({
 //Inicialização de base e rotas
 db.sequelize.sync()
     .then((result) => {
+        //ConfigController.create(); //Criar valores default de config
         app.use('/', UsuarioRoutes);
         app.use('/api/ano', AnoRoutes);
         app.use('/api/aluno',AlunoRoutes);
