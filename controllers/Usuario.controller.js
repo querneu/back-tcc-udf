@@ -3,9 +3,7 @@ const bcrypt = require('bcrypt');
 exports.register = async (req, res) => {
     const hash = bcrypt.hashSync(req.body.cod_senha, 10);
     try {
-        let usuario = await Usuario.create(
-            Object.assign(req.body, { cod_senha: hash })
-        );
+        let usuario = await Usuario.create(Object.assign(req.body, { cod_senha: hash }));
         let data = await usuario.authorize();
         return res.json(data);
     } catch (err) {
@@ -41,11 +39,12 @@ exports.findAll = async (req, res) => {
 
 
 exports.update = async (req, res) => {
+    const hash = bcrypt.hashSync(req.body.cod_senha, 10);
     const usuario = {
-        cod_perfil: req.body.cod_perfil,
+        cod_perfil: req.body.cod_perfil,        
     }
     try {
-        const result = await Usuario.update(usuario, { where: { cod_login: req.params.id } })
+        const result = await Usuario.update(Object.assign(usuario, { cod_senha: hash }), { where: { cod_login: req.params.id } })
         res.send(result);
     } catch (err) {
         res.send(err)
