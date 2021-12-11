@@ -377,6 +377,7 @@ function checkInsertAulaColide(fk_professor, fk_horario, fk_turma) {
                       fk_horario === internalValues.fk_horario &&
                       fk_turma !== internalValues.fk_turma
                     ) {
+                      console.log("Professor já esta na aula")
                       retorno = false;
                     }
                   });
