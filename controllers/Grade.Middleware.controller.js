@@ -1,5 +1,6 @@
 //Funções de controle
 const mysql = require("mysql2");
+const Config = require('./Config.controller');
 
 //Config conexão da base
 const con = mysql.createConnection({
@@ -146,14 +147,32 @@ listar_aula_em_materia = function (fk_serie) {
   });
 };
 
+pegar_configs = function () {
+  return new Promise(
+    function (resolve, reject) {
+      con.query(`select * from configs`,
+        function (err, rows) {
+          if (rows === undefined) {
+            reject(new Error("Error rows is undefined"));
+          } else {
+            resolve(rows[0]);
+          }
+        }
+      )
+    }
+  )
+}
+
 algoritmo = function (
   id_turma,
   horarios_do_turno,
   materias_da_serie,
   aulas_em_serie,
-  existe_turma_na_grade
+  existe_turma_na_grade,
+  configs
 ) {
   return new Promise(function (resolve, reject) {
+   
     //Arrays de controle
     var arrayFiltroDia = [];
     var grade = [];
@@ -162,7 +181,7 @@ algoritmo = function (
     var naoinserirnagrade = false; //Controlar se insere ou não na grade (evitar repetição de aulas no mesmo dia)
     var maxHorarios; // Sera preenchido pela Lista de horarios do turno
     var ih = 0; //(iterador de horario) Fixo, pega tamanho das horas do turno!
-    var maxAulasJuntas = 2; //busca de Config via select qtd_max_aulas from configs where id_config = 1 //esse 1 é fixo mesmo
+    var maxAulasJuntas = configs.qtd_max_aulas; //busca de Config via select qtd_max_aulas from configs where id_config = 1 //esse 1 é fixo mesmo
     var maxAulasJuntasCopy;
     var qtdAulasAInserir = 0; //inicializa com zero, mas preenche a soma com a qtd_aulas da materia.
     var maxQtdIndiceRandomico; // deve ser atualizado dentro dos laços quando remover um aula da lista de aulas a inserir.
@@ -309,4 +328,5 @@ module.exports = {
   listar_aula_em_materia,
   turma_existe_na_grade,
   algoritmo,
+  pegar_configs
 };

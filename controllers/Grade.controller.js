@@ -4,6 +4,7 @@ const TurmaController = require('./Turma.controller');
 
 //Gerar grade
 exports.generate = async (req, res) => {
+  let configs = await gradeMiddleWare.pegar_configs();
 
   //retorna um objeto serie com identificadores
   let serie = await gradeMiddleWare.pega_serie_em_turma(req.body.id_turma);
@@ -33,7 +34,8 @@ exports.generate = async (req, res) => {
     horarios_do_turno,
     materias_da_serie,
     aulas_em_serie,
-    existe_turma_na_grade
+    existe_turma_na_grade,
+    configs
   ).then((data) => {
     res.json({message: "Grade gerada: ",data: data});
   }).catch((err) => res.json({ message: "Esta turma já existe na grade.", data: err }));
