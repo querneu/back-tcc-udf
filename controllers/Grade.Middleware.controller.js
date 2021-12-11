@@ -172,52 +172,32 @@ algoritmo = function (
     if (!horarios_do_turno || !materias_da_serie || !aulas_em_serie) {
       reject(new Error("Valores não inseridos"));
     } else {
-      //roda isso fora do laço de iteração nas listas, pois precisa preservar o total original de aulas, 30, por exemplo...
-
       for (var i = 0, soma = 0, max = materias_da_serie.length; i < max; i++) {
         soma = soma + materias_da_serie[i].qtd_materia;
         qtdAulasAInserir = soma;
       }
-
       aulas_em_serieDia = aulas_em_serie.slice();
       maxHorarios = horarios_do_turno.length;
-
       while (qtdAulasAInserir > 0) {
-
-        //roda isso fora do laço de iteração nas listas, pois precisa preservar o total original de aulas, 30, por exemplo...
-        //console.log(qtdAulasAInserir);
         naoinserirnagrade = false;
-
         maxQtdIndiceRandomico = aulas_em_serie.length;
         numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
         nome_materia = aulas_em_serie[numRdnPosicaoAula].nome_materia;
         id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
         qtd_aula_materia = aulas_em_serie[numRdnPosicaoAula].qtd_materia;
         id_professor = aulas_em_serie[numRdnPosicaoAula].fk_professor;
-        qtd_horas_trabalho =
-          aulas_em_serie[numRdnPosicaoAula].qtd_horas_trabalho;
-
+        qtd_horas_trabalho = aulas_em_serie[numRdnPosicaoAula].qtd_horas_trabalho;
         arrayFiltroDia.forEach((ideaula) => {
-          if (ideaula == id_aula_atual) {
-            naoinserirnagrade = true;
-          }
+          if (ideaula == id_aula_atual) { naoinserirnagrade = true; }
         });
-
-        if (naoinserirnagrade) {
-          continue;
-        } else {
+        if (naoinserirnagrade) { continue; }
+        else {
           maxAulasJuntasCopy = maxAulasJuntas; //armazena uma cópia do valor 2 do maxAulasJuntas para decrementar dentro do while.
           while (maxAulasJuntasCopy > 0 && ih < maxHorarios) {
-            if (arrayFiltroDia.length == aulas_em_serie.length) {
-              break;
-            }
-
+            if (arrayFiltroDia.length == aulas_em_serie.length) { break; }
             id_horario = horarios_do_turno[ih].id_horario;
-
             //--------------------------INSERE
-            if (!checkInsertAulaColide(id_professor, id_horario, id_turma)) {
-              break;
-            }
+            if (!checkInsertAulaColide(id_professor, id_horario, id_turma)) { break; }
             if (
               !checkInsert(
                 grade,
@@ -226,14 +206,8 @@ algoritmo = function (
                 id_professor,
                 qtd_horas_trabalho
               )
-            ) {
-              //arrayFiltroDia.push(id_aula_atual);
-              //numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
-              //id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
-              break;
-            }
+            ) { break; }
 
-            //console.log(checkInsert(grade, id_aula_atual, qtd_aula_materia));
             id_horario = horarios_do_turno[ih].id_horario;
             nome_dia = horarios_do_turno[ih].nome_dia;
             nome_turma = horarios_do_turno[ih].nome_turma;
@@ -248,56 +222,20 @@ algoritmo = function (
               qtd_aula_materia,
               id_professor,
               qtd_horas_trabalho,
-            }; //, ideprofessor}; //preenche um objeto para a grade
-
+            };
             grade.push(itemgrade);
-
             maxAulasJuntasCopy = maxAulasJuntasCopy - 1;
-
             qtdAulasAInserir = qtdAulasAInserir - 1; //decreme
             ih++;
-
-            //--------------------------INSERE
-
-            //Removido pois não queremos que a aula que termina um dia começe o outro
-            /* if (ih % 6 == 0 && ih != 0) {  
-              maxAulasJuntasCopy = maxAulasJuntas;
-            } */
-
-            //console.log("Max dia: " + maxAulasJuntasCopy + " - IH: " + ih);
           }
           arrayFiltroDia.push(id_aula_atual);
-          if (ih % 6 == 0 && ih != 0) {
-            //console.log(arrayFiltroDia);
-            arrayFiltroDia = [];
-          }
+          if (ih % 6 == 0 && ih != 0) { arrayFiltroDia = []; }
         }
-
-        if (ih == maxHorarios) {
-          break;
-        }
-        if (arrayFiltroDia.length == aulas_em_serie.length) {
-          break;
-        }
+        if (ih == maxHorarios) { break; }
+        if (arrayFiltroDia.length == aulas_em_serie.length) { break; }
       }
-
-      //console.log(grade);
-
-
-      grade.forEach((qtd) => {
-        console.log(
-          "ID HORA: " +
-          qtd.id_horario +
-          " - " +
-          qtd.nome_materia +
-          " - qtd_aulas: " +
-          qtd.qtd_aula_materia +
-          " - Dia: " +
-          qtd.nome_dia
-        );
-      });
       resolve(grade);
-    } /*AQUI TERMINA O ELSE*/
+    }
   });
 };
 
