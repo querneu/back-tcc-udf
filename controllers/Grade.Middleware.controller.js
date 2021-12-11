@@ -60,7 +60,7 @@ turma_existe_na_grade = function (id_turma) {
           if (rows === undefined) {
             reject(new Error("Error rows is undefined"));
           } else {
-            resolve(rows[0]);
+            resolve(rows);
           }
         }
       )
@@ -150,7 +150,8 @@ algoritmo = function (
   id_turma,
   horarios_do_turno,
   materias_da_serie,
-  aulas_em_serie
+  aulas_em_serie,
+  existe_turma_na_grade
 ) {
   return new Promise(function (resolve, reject) {
     //Arrays de controle
@@ -171,6 +172,9 @@ algoritmo = function (
 
     if (!horarios_do_turno || !materias_da_serie || !aulas_em_serie) {
       reject(new Error("Valores não inseridos"));
+    } else if (existe_turma_na_grade.length > 0) {
+      console.log("turma já existe na grade");
+      reject(existe_turma_na_grade)
     } else {
       for (var i = 0, soma = 0, max = materias_da_serie.length; i < max; i++) {
         soma = soma + materias_da_serie[i].qtd_materia;

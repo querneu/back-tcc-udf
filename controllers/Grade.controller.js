@@ -27,15 +27,17 @@ exports.generate = async (req, res) => {
     serie.fk_serie
   );
 
+
   let grade = await gradeMiddleWare.algoritmo(
     req.body.id_turma,
     horarios_do_turno,
     materias_da_serie,
     aulas_em_serie,
-    // listar_turmas,
-  );
-  console.log(grade)
-  res.send(grade)
+    existe_turma_na_grade
+  ).then((data) => {
+    res.json({message: "Grade gerada: ",data: data});
+  }).catch((err) => res.json({ message: "Esta turma já existe na grade.", data: err }));
+
 };
 
 exports.create = async (req, res) => {
