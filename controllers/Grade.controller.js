@@ -1,10 +1,12 @@
 const db = require("../models");
 const gradeMiddleWare = require("./Grade.Middleware.controller");
-const TurmaController = require('./Turma.controller');
+const TurmaController = require("./Turma.controller");
 
 //Gerar grade
 exports.generate = async (req, res) => {
   let configs = await gradeMiddleWare.pegar_configs();
+
+  let pegar_grade = await gradeMiddleWare.pegar_grade_completa();
 
   //retorna um objeto serie com identificadores
   let serie = await gradeMiddleWare.pega_serie_em_turma(req.body.id_turma);
@@ -12,7 +14,9 @@ exports.generate = async (req, res) => {
   //retorna um objeto turno com os identificadores
   let turno = await gradeMiddleWare.pega_turno_em_turma(req.body.id_turma);
   //
-  let existe_turma_na_grade = await gradeMiddleWare.turma_existe_na_grade(req.body.id_turma);
+  let existe_turma_na_grade = await gradeMiddleWare.turma_existe_na_grade(
+    req.body.id_turma
+  );
   //existe_turma_na_grade.fk_turma
   //retorna uma lista de objetos de horario com seus identificadores
   let horarios_do_turno = await gradeMiddleWare.listar_horarios_do_turno(
@@ -28,18 +32,23 @@ exports.generate = async (req, res) => {
     serie.fk_serie
   );
 
-
-  let grade = await gradeMiddleWare.algoritmo(
-    req.body.id_turma,
-    horarios_do_turno,
-    materias_da_serie,
-    aulas_em_serie,
-    existe_turma_na_grade,
-    configs
-  ).then((data) => {
-    res.json({message: "Grade gerada: ",data: data});
-  }).catch((err) => res.json({ message: "Esta turma já existe na grade.", data: err }));
-
+  let grade = await gradeMiddleWare
+    .algoritmo(
+      req.body.id_turma,
+      horarios_do_turno,
+      materias_da_serie,
+      aulas_em_serie,
+      existe_turma_na_grade,
+      configs,
+      pegar_grade
+    )
+    .then((data) => {
+      res.json({ message: "Grade gerada: ", data: data });
+    })
+    .catch(
+      (err) => console.log(err)
+      //res.json({ message: "Esta turma já existe na grade", data: err })
+    );
 };
 
 exports.create = async (req, res) => {

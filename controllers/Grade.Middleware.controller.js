@@ -157,24 +157,45 @@ pegar_configs = function () {
   });
 };
 
+pegar_grade_completa = function () {
+  return new Promise(function (resolve, reject) {
+    con.query(
+      `SELECT grades.id_grade, grades.fk_horario, grades.fk_turma, aulas.fk_professor, aulas.id_aula
+      from grades
+      INNER JOIN aulas ON aulas.id_aula = grades.fk_aula
+      ORDER BY grades.fk_horario ASC`,
+      function (err, rows) {
+        if (rows === undefined) {
+          reject(new Error("Error rows is undefined"));
+        } else {
+          resolve(rows);
+        }
+      }
+    );
+  });
+};
+
 algoritmo = function (
   id_turma,
   horarios_do_turno,
   materias_da_serie,
   aulas_em_serie,
   existe_turma_na_grade,
-  configs
+  configs,
+  pegar_grade
 ) {
   return new Promise(function (resolve, reject) {
     //Arrays de controle
     var arrayFiltroDia = [];
     var grade = [];
+    var grade_completa = pegar_grade;
     //Variáveis de controle
     var id_horario;
     var naoinserirnagrade = false; //Controlar se insere ou não na grade (evitar repetição de aulas no mesmo dia)
     var maxHorarios; // Sera preenchido pela Lista de horarios do turno
     var ih = 0; //(iterador de horario) Fixo, pega tamanho das horas do turno!
-    var maxAulasJuntas = configs.qtd_max_aulas; //busca de Config via select qtd_max_aulas from configs where id_config = 1 //esse 1 é fixo mesmo
+    //console.log(configs); configs.qtd_max_aulas
+    var maxAulasJuntas = 2; //busca de Config via select qtd_max_aulas from configs where id_config = 1 //esse 1 é fixo mesmo
     var maxAulasJuntasCopy;
     var qtdAulasAInserir = 0; //inicializa com zero, mas preenche a soma com a qtd_aulas da materia.
     var maxQtdIndiceRandomico; // deve ser atualizado dentro dos laços quando remover um aula da lista de aulas a inserir.
@@ -194,18 +215,27 @@ algoritmo = function (
       }
       aulas_em_serieDia = aulas_em_serie.slice();
       maxHorarios = horarios_do_turno.length;
+      console.log("COMECEI");
       while (qtdAulasAInserir > 0) {
         naoinserirnagrade = false;
         maxQtdIndiceRandomico = aulas_em_serie.length;
         numRdnPosicaoAula = getRandomIndiceAula(0, maxQtdIndiceRandomico);
+
         nome_materia = aulas_em_serie[numRdnPosicaoAula].nome_materia;
+        id_professor = aulas_em_serie[numRdnPosicaoAula].fk_professor;
         id_aula_atual = aulas_em_serie[numRdnPosicaoAula].id_aula;
         qtd_aula_materia = aulas_em_serie[numRdnPosicaoAula].qtd_materia;
-        id_professor = aulas_em_serie[numRdnPosicaoAula].fk_professor;
+
+        var loki = aulas_em_serie[numRdnPosicaoAula];
+        console.log(loki);
+
+        /*  console.log(
+          "Id professor da aula: " + id_professor + " - Aula: " + nome_materia
+        ); */
         qtd_horas_trabalho =
           aulas_em_serie[numRdnPosicaoAula].qtd_horas_trabalho;
         arrayFiltroDia.forEach((ideaula) => {
-          if (ideaula == id_aula_atual) {
+          if (ideaula === id_aula_atual) {
             naoinserirnagrade = true;
           }
         });
@@ -214,12 +244,32 @@ algoritmo = function (
         } else {
           maxAulasJuntasCopy = maxAulasJuntas; //armazena uma cópia do valor 2 do maxAulasJuntas para decrementar dentro do while.
           while (maxAulasJuntasCopy > 0 && ih < maxHorarios) {
-            if (arrayFiltroDia.length == aulas_em_serie.length) {
+            /* if (arrayFiltroDia.length == aulas_em_serie.length) {
+              console.log("NUNCA ACONTEÇO");
               break;
-            }
+            } */
             id_horario = horarios_do_turno[ih].id_horario;
+            console.log(id_horario);
+            id_professorTeste = id_professor;
             //--------------------------INSERE
-            if (!checkInsertAulaColide(id_professor, id_horario, id_turma)) {
+            console.log(
+              loki.fk_professor +
+                " Z " +
+                id_horario +
+                " Z " +
+                id_turma +
+                "-----------"
+            );
+            if (
+              !checkInsertAulaColide(
+                loki.fk_professor,
+                id_horario,
+                loki.id_aula,
+                grade_completa
+              )
+            ) {
+              console.log("estou aqui");
+
               break;
             }
             if (
@@ -254,11 +304,16 @@ algoritmo = function (
             maxAulasJuntasCopy = maxAulasJuntasCopy - 1;
             qtdAulasAInserir = qtdAulasAInserir - 1; //decreme
             ih++;
+            if (maxAulasJuntasCopy === 0) {
+              arrayFiltroDia.push(id_aula_atual);
+            }
           }
-          arrayFiltroDia.push(id_aula_atual);
-          if (ih % 6 == 0 && ih != 0) {
-            arrayFiltroDia = [];
-          }
+        }
+
+        //console.log(arrayFiltroDia);
+
+        if (ih % 6 == 0 && ih != 0) {
+          arrayFiltroDia = [];
         }
         if (ih == maxHorarios) {
           break;
@@ -267,6 +322,8 @@ algoritmo = function (
           break;
         }
       }
+      //console.log(grade[ih].id_aula_atual);
+
       resolve(grade);
     }
   });
@@ -284,55 +341,64 @@ function checkInsert(
   let soma = 0;
   let somaProf = 0;
 
-  for (let i = 0; i < arry.length; i++) {
-    if (arry[i].id_aula_atual === id_aula) {
-      soma++;
+  if (!arry) {
+    for (let i = 0; i < arry.length; i++) {
+      if (arry[i].id_aula_atual === id_aula) {
+        soma++;
+      }
+      if (
+        //Checa o máximo do professor.
+        arry[i].id_professor === id_professor &&
+        arry[i].fk_turma !== id_turma
+      ) {
+        somaProf++;
+      }
     }
-    if (
-      //Checa o máximo do professor.
-      arry[i].id_professor === id_professor &&
-      arry[i].fk_turma !== id_turma
-    ) {
-      somaProf++;
-    }
-  }
 
-  if (soma < qtdMaxima && somaProf < qtdHorasTrabalho) {
-    if (qtdMaxima - soma == 1) {
-      maxAulasJuntasCopy = 1;
+    if (soma < qtdMaxima && somaProf < qtdHorasTrabalho) {
+      if (qtdMaxima - soma == 1) {
+        maxAulasJuntasCopy = 1;
+      }
+      return true;
+    } else {
+      return false;
     }
-    return true;
   } else {
-    return false;
+    return true;
   }
 }
 
-function checkInsertAulaColide(fk_professor, fk_horario, fk_turma) {
-  let retorno = true;
-  return new Promise(function (resolve, reject) {
-    con.query(
-      `SELECT grades.id_grade, grades.fk_horario, grades.fk_turma, aulas.fk_professor
-        from grades
-        INNER JOIN aulas ON aulas.id_aula = grades.fk_aula`,
-      function (err, rows) {
-        if (rows === undefined) {
-          reject(new Error("Error rows is undefined"));
-        } else {
-          rows.forEach((internalValues) => {
-            if (
-              fk_professor === internalValues.fk_professor &&
-              fk_horario === internalValues.fk_horario &&
-              fk_turma !== internalValues.fk_turma
-            ) {
-              console.log("Professor já esta na aula");
-              retorno = false;
-            }
-          });
-        }
-      }
+function checkInsertAulaColide(
+  fk_professor1,
+  fk_horario1,
+  id_aula1,
+  grade_completa
+) {
+  var retorno = true;
+
+  console.log("aqui");
+
+  grade_completa.forEach((internalValues) => {
+    if (
+      fk_professor1 === internalValues.fk_professor &&
+      fk_horario1 === internalValues.fk_horario &&
+      id_aula1 === internalValues.id_aula
+    ) {
+      console.log("2257");
+      retorno = false;
+    }
+    console.log(
+      internalValues.fk_professor +
+        " - " +
+        internalValues.fk_horario +
+        " - " +
+        internalValues.id_aula
     );
-    return retorno;
+    //console.log(fk_professor1 + " - " + fk_horario1 + " - " + id_aula1);
   });
+  //console.log(grade_completa);
+
+  return retorno;
 }
 
 function getRandomIndiceAula(min, max) {
@@ -348,4 +414,5 @@ module.exports = {
   turma_existe_na_grade,
   algoritmo,
   pegar_configs,
+  pegar_grade_completa,
 };
