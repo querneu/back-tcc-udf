@@ -381,10 +381,8 @@ function checkInsertAulaColide(
   grade_completa.forEach((internalValues) => {
     if (
       fk_professor1 === internalValues.fk_professor &&
-      fk_horario1 === internalValues.fk_horario &&
-      id_aula1 === internalValues.id_aula
+      fk_horario1 === internalValues.fk_horario
     ) {
-      console.log("2257");
       retorno = false;
     }
     console.log(
